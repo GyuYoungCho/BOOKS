@@ -2,11 +2,11 @@
 
 1. **아이디어 선정**
 
-    ![스크린샷 2021-09-03 오전 10.31.03.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e4be5d79-4678-43d1-a32b-137e8073f77d/스크린샷_2021-09-03_오전_10.31.03.png)
+    ![picture1](./picture/idea.png)
 
 2. **와이어 프레임 -** [https://www.figma.com/file/i8OeT8X7F49lt3Hvij9jWk/SSAFY-특화-프로젝트?node-id=0%3A1](https://www.figma.com/file/i8OeT8X7F49lt3Hvij9jWk/SSAFY-%ED%8A%B9%ED%99%94-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8?node-id=0%3A1)
 
-    ![스크린샷 2021-09-03 오전 10.28.54.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/aaa4ae72-ff40-48ff-a9ab-c06c1a062777/스크린샷_2021-09-03_오전_10.28.54.png)
+    ![picture2](./picture/wireFrame.png)
 
 ---
 
