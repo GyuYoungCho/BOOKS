@@ -1,3 +1,16 @@
+# 특화 프로젝트
+
+### SSAFY 서울 6반 A604
+
+### Member
+|Name|Part|
+|-|-|
+|조규영|Backend|
+|김낙현|Backend|
+|김수연|PM|
+|도태욱|Frontend|
+|정원혁|Frontend|
+
  ## Sub-1 산출물
 
 1. **아이디어 선정**
@@ -9,6 +22,7 @@
     ![picture2](./picture/wireFrame.png)
 
 ---
+
 
 김수연
 
@@ -34,3 +48,22 @@
 - 명세서 과제 수행
 - 활용 데이터 찾기
 - 추천시스템 관련 자료 찾기
+
+---
+<br>
+
+
+### 과제 수행
+
+- package 설치
+
+`pip install -r requirements.txt`
+
+- Task 1~4
+
+```
+python parse.py                         # 1
+python analyze.py                       # 2
+python visualize.py                     # 3
+python matrixFactorization.py           # 4
+```
