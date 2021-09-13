@@ -1,13 +1,18 @@
 <template>
   <div class="mainPage">
     <h1>this is main page</h1>
+    <search-bar />
   </div>
 </template>
 
 <script>
+import SearchBar from '../components/SearchBar.vue';
+
 export default {
   name: "MainPage",
-  components: {},
+  components: {
+    SearchBar,
+  },
   data() {
     return {
       sampleData: "",

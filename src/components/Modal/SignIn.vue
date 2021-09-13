@@ -1,43 +1,45 @@
 <template>
-  <div>
-    <v-dialog
-      v-model="dialog"
-      width="500"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="red lighten-2"
-          dark
-          v-bind="attrs"
-          v-on="on"
-        >
-          Click Me
-        </v-btn>
-      </template>
+  <div class="SignInDiv">
+    <!-- v-if="$route.path.length == 8 || $route.path.length == 7" -->
+    <div class="SignInDivBody" @keyup.enter="signIn(signInData)">
+      <!-- <h1>Sign In</h1> -->
+      <!-- <img src="https://cdn.discordapp.com/attachments/869113013892964412/870324360420929586/logo_png.png" alt=""> -->
+      <img src="../../assets/imsi.png" alt="" />
+      <div>
+        <!-- <label for="id">ID </label> -->
+        <input
+          v-model="signInData.id"
+          id="id"
+          pattern="^([a-z0-9_]){6,50}$"
+          placeholder="ID"
+          type="text"
+        />
+      </div>
 
-      <v-card>
-        <v-card-title class="text-h5 grey lighten-2">
-          Privacy Policy
-        </v-card-title>
+      <div>
+        <!-- <label for="password">Password : </label> -->
+        <form>
+          <input
+            v-model="signInData.password"
+            id="password"
+            pattern=""
+            placeholder="Password"
+            type="password"
+            autocomplete="off"
+          />
+        </form>
+      </div>
 
-        <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="primary"
-            text
-            @click="dialog = false"
-          >
-            I accept
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+      <button class="login" @click="signIn(signInData)">Login</button>
+    </div>
+    <div class="SignInDivFooter">
+      <span>
+        <a @click="signUp()">Create Account</a>
+      </span>
+      <span>
+        <a @click="close()">Close</a>
+      </span>
+    </div>
   </div>
 </template>
 
@@ -49,18 +51,145 @@ export default {
     return {
       sampleData: "",
       dialog: false,
+      signInData: {
+        id: "",
+        password: "",
+      },
     };
   },
   beforeCreate() {},
-  created() {},
+  created() {
+
+  },
   beforeMount() {},
-  mounted() {},
+  async mounted() {
+
+  },
   beforeUpdate() {},
   updated() {},
   beforeUnmount() {},
   unmounted() {},
-  methods: {},
+  methods: {
+    close() {
+      this.$store.state.tryingLogin = !this.$store.state.tryingLogin;
+    },
+  },
 };
 </script>
 
-<style></style>
+<style scoped>
+.SignInDiv {
+  /* display: table; */
+  /* inline-block 사용시 margin과 함께 사용. inline-block은 가로 중앙정렬만 가능 */
+  /* display: inline-block; */
+
+  /* 다른 중앙정렬 방식 position ~ transform */
+  /* body에 overflow:auto 통해 뷰포트가 작아져도 웹사이트 구조는 유지하게 만들 수 있다.(여기선 index.html) */
+  position: absolute;
+  top: calc(218px);
+  left: calc(90%);
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.4);
+
+  width: 380px;
+  height: 300px;
+  /* 상우하좌 padding으로 내부컨텐츠 정렬 구현 */
+  padding: 10px 45px 40px 45px;
+  /* margin: 50px auto; */
+  /* margin-block: 10%; */
+
+  text-align: center;
+
+  border-radius: 50px;
+  /* background-color: rgba(0, 0, 0, .75); */
+  background-color: rgba(183, 220, 204, 0.5);
+  /* opacity: 0.5; */
+  box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+}
+
+.SignInDivBody {
+  /* display: table-cell; */
+  margin: auto;
+
+  /* vertical-align: middle; */
+}
+
+/* 좌우 배치 */
+.SignInDivFooter {
+  display: flex;
+  justify-content: space-around;
+}
+
+h1 {
+  color: white;
+  text-align: start;
+}
+
+img {
+  margin-top: 10px;
+  width: 100px;
+}
+
+input {
+  width: 250px;
+  height: 30px;
+  /* 상 좌우 하 */
+  padding: 12px 20px 5px;
+  margin-bottom: 15px;
+
+  border: none;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.6);
+
+  color: black;
+  font-size: 16px;
+}
+
+/* input#id:invalid {
+  border: 3px solid red;
+} */
+/* input:valid {
+    background-color: greenyellow;
+  } */
+
+/* 글자 입력시 테두리 삭제 */
+input:focus {
+  outline: none;
+}
+
+input::placeholder {
+  color: rgba(237, 119, 102, 1);
+  font-weight: bold;
+  font-family: monospace;
+}
+
+.login {
+  width: 150px;
+  height: 40px;
+  padding: 12px 20px 5x;
+  margin-bottom: 25px;
+
+  border: none;
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.6);
+
+  color: rgba(237, 119, 102, 1);
+  font-size: 20px;
+  font-weight: bold;
+  font-family: monospace;
+  text-decoration: none;
+
+  cursor: pointer;
+}
+
+span {
+  color: rgba(237, 119, 102, 1);
+  font-size: 15px;
+  font-weight: bold;
+}
+
+span > a {
+  font-weight: bold;
+  cursor: pointer;
+}
+</style>
