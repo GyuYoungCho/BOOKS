@@ -20,4 +20,6 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "book_id")
     private int book_id;
+	
+	
 }
