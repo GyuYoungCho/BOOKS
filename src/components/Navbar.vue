@@ -38,8 +38,6 @@
           </div>
           <div v-else class="nav-right">
             <li class="nav-item nav-login" @click="signOut">Logout</li>
-            <li class="nav-item">알람</li>
-            <li class="nav-item">프사</li>
           </div>
         </div>
       </ul>
@@ -56,6 +54,7 @@ export default {
   data() {
     return {
       sampleData: "",
+      dialog: false,
     };
   },
   beforeCreate() {},

@@ -1,19 +1,19 @@
 <template>
   <div>
     <Navbar />
-    <MainPage />
+    <div class="appDiv">
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script>
 import Navbar from './components/Navbar.vue';
-import MainPage from './views/MainPage.vue';
 
 export default {
   name: "App",
   components: {
     Navbar,
-    MainPage,
   },
   data: () => ({
     sampleData: false,
@@ -33,4 +33,9 @@ export default {
   /* ::v-deep .v-main__wrap {
     background-color: burlywood;
   } */
+  .appDiv {
+    max-width: 1080px;
+    margin: 0 auto;
+    margin-top: 48px;
+  }
 </style>
