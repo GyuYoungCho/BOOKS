@@ -1,26 +1,20 @@
 <template>
-  <div class="mainPage">
+  <div>
     <h1>Hello</h1>
   </div>
 </template>
 
 <script>
 export default {
-  name: "MainPage",
+  name: "SignUp",
   components: {},
   data() {
     return {
       sampleData: "",
-      isLogin: false,
     };
   },
   beforeCreate() {},
-  created() {
-    const token = localStorage.getItem("token");
-    if (token) {
-      this.isLogin = true;
-    }
-  },
+  created() {},
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},
@@ -31,11 +25,4 @@ export default {
 };
 </script>
 
-<style scoped>
-  .mainPage {
-    max-width: 1080px;
-    margin: 0 auto;
-    margin-top: 48px;
-    text-align: center;
-  }
-</style>
+<style></style>
