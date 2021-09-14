@@ -1,5 +1,7 @@
 package com.project.book.dto;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +21,24 @@ public class Book {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "book_id")
-    private int book_id;
+    private int bookId;
 	
+	private String title;
+	private String link;
+	private String author;
 	
+	private Date pubDate;
+	
+	private String description;
+	
+	private int priceSales;
+	private int priceStandard;
+	private int mileage;
+	
+	private String malltype;
+	private String coverFilepath;
+	
+	private int categoryId;
+	private String publisher;
+	private int itemPage;
 }
