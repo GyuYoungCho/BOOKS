@@ -15,6 +15,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,8 +46,8 @@ public class BookController {
 		String url = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=" + key + "&Query=" + keyword + "&QueryType=Title&MaxResults=10&start=1&SearchTarget=Book&output=xml&Version=20131101";
 		JSONArray jsonArray=JSONParsing(url);
 		SimpleDateFormat dateparse = new SimpleDateFormat("yyyy-mm-dd");
-		List<Book> arrayList=new ArrayList<>();
-		
+		List<Book> bookList=new ArrayList<>();
+//		Page<Book> bookpage;
 		for (int i = 0; i <jsonArray.size() ; i++) {
             JSONObject data=(JSONObject) jsonArray.get(i);
             
@@ -65,10 +66,10 @@ public class BookController {
                     data.get("publisher").toString(),
                     0
             );
-            arrayList.add(book);
+            bookList.add(book);
         }
 		
-		return null;
+		return new PageImpl<Book>(bookList,pageable,bookList.size());
 	}
 	
 	@ApiOperation(value = "book의 상세 정보", response = String.class)
