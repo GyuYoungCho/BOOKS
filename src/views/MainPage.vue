@@ -2,16 +2,22 @@
   <div class="mainPage">
     <h1>this is main page</h1>
     <search-bar />
+    <best-seller />
+    <recommend-books />
   </div>
 </template>
 
 <script>
+import BestSeller from '../components/carousel/BestSeller.vue';
+import RecommendBooks from '../components/carousel/RecommendBooks.vue';
 import SearchBar from '../components/SearchBar.vue';
 
 export default {
   name: "MainPage",
   components: {
     SearchBar,
+    BestSeller,
+    RecommendBooks,
   },
   data() {
     return {

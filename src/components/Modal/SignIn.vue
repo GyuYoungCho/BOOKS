@@ -1,10 +1,10 @@
 <template>
-  <div class="SignInDiv">
+  <div class="SignInDiv" id="signInDiv">
     <!-- v-if="$route.path.length == 8 || $route.path.length == 7" -->
-    <div class="SignInDivBody" @keyup.enter="signIn(signInData)">
+    <div class="SignInDivBody" @keyup.enter="signIn(signInData)" id="signInDivBody">
       <!-- <h1>Sign In</h1> -->
       <!-- <img src="https://cdn.discordapp.com/attachments/869113013892964412/870324360420929586/logo_png.png" alt=""> -->
-      <img src="../../assets/imsi.png" alt="" />
+      <img src="../../assets/imsi.png" alt="" id="loginLogo" />
       <div>
         <!-- <label for="id">ID </label> -->
         <input
@@ -73,6 +73,13 @@ export default {
     close() {
       this.$store.state.tryingLogin = !this.$store.state.tryingLogin;
     },
+    signIn(signInData) {
+      console.log(signInData)
+      // this.$store.dispatch('signIn', signInData)
+    },
+    signUp() {
+      this.$router.push('/signup')
+    }
   },
 };
 </script>

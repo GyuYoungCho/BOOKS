@@ -31,9 +31,11 @@ export default {
   methods: {
     popup(event) {
       // 클릭한 컴포넌트 정보 찾아서 로그인 컴포넌트라면 작동하게 하고, 아니라면 닫히게 하기.
-      // console.log(event.target)
       if (event.target.id === 'loginBtn') {
         this.$store.state.tryingLogin = !this.$store.state.tryingLogin;
+      }
+      else if (event.target.id === 'signInDiv' || event.target.id === 'signInDivBody' || event.target.id === 'id' || event.target.id === 'password' || event.target.id === 'loginLogo') {
+        console.log()
       }
       else {
         this.$store.state.tryingLogin = false;

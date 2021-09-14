@@ -27,8 +27,8 @@
               <router-link to="/signup">Signup</router-link>
             </li>
           </div>
-          <div class="nav-right">
-            <li class="nav-item nav-login">Logout</li>
+          <div class="nav-right" v-if="isLoggedIn()">
+            <li class="nav-item nav-login" @click="logout()">Logout</li>
           </div>
         </div>
       </ul>
@@ -39,6 +39,7 @@
 <script>
 import "@/components/css/navbar.scss";
 import SignIn from "./modal/SignIn.vue";
+import { mapActions } from 'vuex';
 
 export default {
   name: "Navbar",
@@ -59,6 +60,18 @@ export default {
   beforeUnmount() {},
   unmounted() {},
   methods: {
+    ...mapActions(['logout']),
+    isLoggedIn() {
+      // localStorage.setItem("key", "123")
+      if (localStorage.getItem("key")) {
+        console.log('있음')
+        return true
+      }
+      else {
+        console.log(localStorage.getItem('key'))
+        return false
+      }
+    },
   },
 };
 </script>

@@ -1,14 +1,22 @@
 <template>
-  <v-app>
-    <v-autocomplete
-      :search-input.sync="model"
-      filled
-      rounded
-      solo
-      clearable
-      :items="items"
-    ></v-autocomplete>
-  </v-app>
+  <div>
+    <v-app>
+      <v-container fluid>
+        <v-row align="center" justify="end">
+          <v-col class="d-flex" cols="2" sm="2">
+            <v-select :items="items" placeholder="통합검색"></v-select>
+          </v-col>
+
+          <v-col class="d-flex" cols="8" sm="8">
+            <v-text-field placeholder="검색어를 입력하세요."></v-text-field>
+          </v-col>
+          <v-col class="d-flex" cols="1">
+            <i class="fas fa-search"></i>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-app>
+  </div>
 </template>
 
 <script>
@@ -20,7 +28,7 @@ export default {
   data() {
     return {
       model: null,
-      items: [],
+      items: ["저자", "제목"],
     };
   },
   watch: {
@@ -56,4 +64,12 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+::v-deep .v-application--wrap {
+  min-height: 0;
+}
+i{
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+</style>
