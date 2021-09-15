@@ -1,39 +1,27 @@
 <template>
-  <v-app>
-    <v-form ref="form" v-model="valid" lazy-validation>
-      <v-text-field
-        v-model="id"
-        :counter="10"
-        :rules="idRules"
-        label="아이디"
-        required
-      ></v-text-field>
-      <v-btn color="success" class="mr-4" @click="validate"> 중복 확인 </v-btn>
-
-      <v-text-field
-        v-model="password"
-        :rules="passwordRules"
-        :type="'password'"
-        label="비밀번호"
-        required
-      ></v-text-field>
-
-      <v-text-field
-        v-model="passwordChk"
-        :rules="passwordRules"
-        :type="'password'"
-        label="비밀번호 확인"
-        required
-      ></v-text-field>
-
-      <v-text-field
-        v-model="name"
-        :rules="nameRules"
-        label="별명"
-        required
-      ></v-text-field>
-      <v-btn color="success" class="mr-4" @click="validate"> 중복 확인 </v-btn>
-    </v-form>
+  <div>
+    <div>검색 키워드 관리</div>
+    <v-combobox
+      v-model="chips"
+      chips
+      clearable
+      label="Your favorite hobbies"
+      multiple
+      solo
+    >
+      <template v-slot:selection="{ attrs, item, select, selected }">
+        <v-chip
+          v-bind="attrs"
+          :input-value="selected"
+          close
+          @click="select"
+          @click:close="remove(item)"
+        >
+          <strong>{{ item }}</strong
+          >&nbsp;
+        </v-chip>
+      </template>
+    </v-combobox>
 
     <v-card class="mx-auto">
       <v-card-text>
@@ -49,30 +37,20 @@
     </v-card>
 
     <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">
-      회원가입 완료
+      설정 완료
     </v-btn>
-  </v-app>
+  </div>
 </template>
 <script>
 export default {
   components: {},
   data: () => ({
-    valid: true,
-    id: "",
-    password: "",
-    passwordChk: "",
-    name: "",
-
-    idRules: [
-      (v) => !!v || "아이디를 입력해주세요.",
-      (v) => (v && v.length <= 10) || "Name must be less than 10 characters",
+    chips: [
+      "Programming",
+      "Playing video games",
+      "Watching movies",
+      "Sleeping",
     ],
-
-    emailRules: [
-      (v) => !!v || "E-mail is required",
-      (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-    ],
-
     selected: [],
     hashtags: [
       "가정/요리/뷰티",
@@ -119,8 +97,9 @@ export default {
   computed: {},
 
   methods: {
-    validate() {
-      this.$refs.form.validate();
+    remove(item) {
+      this.chips.splice(this.chips.indexOf(item), 1);
+      this.chips = [...this.chips];
     },
   },
 };

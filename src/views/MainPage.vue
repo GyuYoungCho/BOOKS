@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import SearchBar from '../components/SearchBar.vue';
+import SearchBar from "../components/SearchBar.vue";
 
 export default {
   name: "MainPage",
@@ -37,10 +37,10 @@ export default {
 </script>
 
 <style scoped>
-  .mainPage {
-    max-width: 1080px;
-    margin: 0 auto;
-    margin-top: 48px;
-    text-align: center;
-  }
+.mainPage {
+  max-width: 1080px;
+  margin: 0 auto;
+  margin-top: 48px;
+  text-align: center;
+}
 </style>

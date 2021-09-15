@@ -1,14 +1,12 @@
 <template>
-  <v-app>
-    <v-autocomplete
-      :search-input.sync="model"
-      filled
-      rounded
-      solo
-      clearable
-      :items="items"
-    ></v-autocomplete>
-  </v-app>
+  <v-autocomplete
+    :search-input.sync="model"
+    filled
+    rounded
+    solo
+    clearable
+    :items="items"
+  ></v-autocomplete>
 </template>
 
 <script>

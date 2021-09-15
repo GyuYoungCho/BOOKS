@@ -28,6 +28,9 @@
             </li>
           </div>
           <div class="nav-right">
+            <li class="nav-item nav-signup">
+              <router-link to="/setting">관심분야 설정</router-link>
+            </li>
             <li class="nav-item nav-login">Logout</li>
           </div>
         </div>
@@ -49,17 +52,14 @@ export default {
     };
   },
   beforeCreate() {},
-  created() {
-  },
+  created() {},
   beforeMount() {},
-  mounted() {
-  },
+  mounted() {},
   beforeUpdate() {},
   updated() {},
   beforeUnmount() {},
   unmounted() {},
-  methods: {
-  },
+  methods: {},
 };
 </script>
 
