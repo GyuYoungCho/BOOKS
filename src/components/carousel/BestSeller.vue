@@ -5,7 +5,7 @@
 
     <carousel-3d :width="200" :height="300" :display="9" :autoplay="true" :autoplayHoverPause="true" :inverseScaling="100" :onMainSlideClick="test">
       <slide v-for="(slide, i) in slides" :index="i" :key="i" :id="`slide${i}`" style="border-radius: 7px;">
-        <img src="../../assets/imsi.png" alt="">
+        <img src="../../assets/BOOKS-logo.png" alt="">
         <span class="title">You know</span>
         <p>
           {{ i }}

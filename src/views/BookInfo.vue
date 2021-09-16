@@ -8,6 +8,16 @@
     <div style="display:flex; flex-direction:row; justify-content:space-between" >
       <img src="https://images.unsplash.com/photo-1507608616759-54f48f0af0ee?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2134&q=80" alt="이미지없음">
       <div class="bookInfo">
+        <ul>
+          <li style="list-style:none;">
+            <div style="position:absolute; width: 100px;"> 
+              테스트
+            </div>
+            <div style="margin-left: 100px">
+              안녕하세요 여러분?
+            </div>
+          </li>
+        </ul>
         <p>요약설명구</p>
         <br>
         <p>회원리뷰평점</p>
@@ -28,7 +38,7 @@ export default {
   components: {},
   data() {
     return {
-      sampleData: ''
+      bookData: [],
     };
   },
   beforeCreate() {},

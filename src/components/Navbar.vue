@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div v-if="this.$router.currentRoute.name !== 'Intro'">
     <nav>
       <ul class="nav-container">
         <div class="nav-left">
           <li class="nav-item nav-logo">
             <router-link to="/">
-              <img class="logo" src="../assets/imsi.png" alt="Sopoong logo" />
+              <img class="logo" src="../assets/BOOKS-logo-black.png" alt="Books logo" />
             </router-link>
           </li>
           <router-link to="/" class="text-logo"> BOOKS </router-link>

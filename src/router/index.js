@@ -4,11 +4,17 @@ import MainPage from "../views/MainPage.vue";
 import SignUp from "../views/accounts/SignUp.vue";
 import Setting from "../views/accounts/Setting.vue";
 import BookInfo from "../views/BookInfo.vue";
+import Intro from "../views/Intro.vue"
 
 // import SignIn from "../components/modal/SignIn.vue";
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: "/intro",
+    name: "Intro",
+    component: Intro
+  },
   {
     path: "/",
     name: "MainPage",

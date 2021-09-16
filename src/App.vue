@@ -1,5 +1,5 @@
 <template>
-  <div @click="popup($event)">
+  <div ref="appDiv" @click="popup($event)">
     <Navbar />
     <div class="appDiv">
       <router-view />
@@ -22,10 +22,18 @@ export default {
   created() {
     if (process.env.NODE_ENV === "development") {
       console.log("on develop");
-    }
+    };
   },
+  // Dom이 생성된 Mounted에서 태그 관련 터치를 진행해야 한다.
   mounted() {
     this.$store.state.tryingLogin = false;
+    if (this.$router.currentRoute.name === 'Intro') {
+      this.$refs.appDiv.style.backgroundImage = "url('https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2200&q=80')"
+      console.log(this.$refs.appDiv.style.backgroundImage)
+      this.$refs.appDiv.style.backgroundSize= "cover"
+    }
+    
+
   },
   methods: {
     popup(event) {
@@ -56,6 +64,6 @@ export default {
   /* min-width: 600px;
   max-width: 1080px; */
   margin: 0 auto;
-  margin-top: 60px;
+  /* margin-top: 60px; */
 }
 </style>
