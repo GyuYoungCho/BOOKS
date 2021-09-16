@@ -27,8 +27,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.book.dao.BookDao;
+import com.project.book.dao.UserDao;
+import com.project.book.dao.UserLogDao;
 import com.project.book.dto.Book;
+import com.project.book.dto.BookDetail;
 import com.project.book.dto.Bookapi;
+import com.project.book.dto.User;
+import com.project.book.dto.UserLog;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -38,47 +43,34 @@ import io.swagger.annotations.ApiOperation;
 public class BookController {
 	
 	@Autowired
-	BookDao boodao;
+	BookDao bookDao;
+	
+	@Autowired
+	UserDao userDao;
+	
+	@Autowired
+	UserLogDao userlogDao;
+	
 	Bookapi api;
 	String key = new Bookapi().getKey();
 	
 	@ApiOperation(value = "단어를 포함한 book 검색", response = String.class)
 	@GetMapping("/search")
 	public Page<Book> getBookSearchList(@RequestParam("keyword") String keyword ,final Pageable pageable) throws NumberFormatException, ParseException{
-		String url = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=" + key + "&Query=" + keyword + "&QueryType=Title&MaxResults=10&start=1&SearchTarget=Book&output=js&Version=20131101";
-		JSONArray jsonArray=JSONParsing(url);
-		SimpleDateFormat dateparse = new SimpleDateFormat("yyyy-mm-dd");
-		List<Book> bookList=new ArrayList<>();
-//		Page<Book> bookpage;
-		for (int i = 0; i <jsonArray.size() ; i++) {
-            JSONObject data=(JSONObject) jsonArray.get(i);
-            
-            Book book=new Book(1,
-                    data.get("title").toString(),
-                    data.get("link").toString(),
-                    data.get("author").toString(),
-                    dateparse.parse(data.get("pubDate").toString()),
-                    data.get("description").toString(),
-                    Integer.parseInt(data.get("priceSales").toString()),
-                    Integer.parseInt(data.get("priceStandard").toString()),
-                    Integer.parseInt(data.get("mileage").toString()),
-                    data.get("malltype").toString(),
-                    data.get("cover").toString(),
-                    Integer.parseInt(data.get("categoryId").toString()),
-                    data.get("publisher").toString(),
-                    0
-            );
-            bookList.add(book);
-        }
-		
-		return new PageImpl<Book>(bookList,pageable,bookList.size());
+		keyword = "%" + keyword + "%";
+		Page<Book> bookpage = bookDao.findByTitleKeyword(keyword, pageable);
+		List<Book> booklist = bookpage.toList();
+		return new PageImpl<Book>(booklist, pageable, bookpage.getTotalElements());
 	}
 	
 	@ApiOperation(value = "book의 상세 정보", response = String.class)
-	@GetMapping("/detail/{bookId}")
-	public ResponseEntity<Book> bookdetail(@PathVariable("bookId") String bookId) throws NumberFormatException, ParseException{
+	@GetMapping("/detail/{bookId}/{userId}")
+	public ResponseEntity<BookDetail> bookdetail(@PathVariable("bookId") int bookId, @PathVariable("userId") int userId) throws NumberFormatException, ParseException{
+		
+		Book book = bookDao.getByBookId(bookId);
+		
 		String itemurl = "http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx?ttbkey="+ key + 
-				"&itemIdType=ISBN&ItemId="+ bookId + "&output=js&Version=20131101";
+				"&itemIdType=ISBN&ItemId="+ book.getIsbn() + "&output=js&Version=20131101";
 		JSONArray jsonArray=JSONParsing(itemurl);
 		
 		if (jsonArray.isEmpty()) return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
@@ -88,7 +80,7 @@ public class BookController {
 		
 		JSONObject subinfodata=(JSONObject) data.get("subInfo");
 		
-		Book book=new Book(1,
+		BookDetail bookdetail =new BookDetail(1,
                 data.get("title").toString(),
                 data.get("link").toString(),
                 data.get("author").toString(),
@@ -104,14 +96,14 @@ public class BookController {
                 Integer.parseInt(subinfodata.get("itemPage").toString())
         );
 		
-		return new ResponseEntity<Book>(book, HttpStatus.OK);
-	}
-	
-	@ApiOperation(value = "book의 리뷰 목록", response = String.class)
-	@GetMapping("detail/review/{bookId}")
-	public Page<Book> getbookreviews(@PathVariable("bookId") int bookId){
-		String url = "";
-		return null;
+		if(bookdetail!=null && userId!=0) {
+			User user = userDao.getByUserId(userId);
+			UserLog log =  new UserLog(0,new Date(),user,book);
+			userlogDao.save(log);
+		}
+		
+		
+		return new ResponseEntity<>(bookdetail, HttpStatus.OK);
 	}
 	
 	public JSONArray JSONParsing(String strurl){
