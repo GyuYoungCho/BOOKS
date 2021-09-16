@@ -17,14 +17,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Book {
-	@Id
+public class User {
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "book_id")
-    private int bookId;
-	
-	private String title;
-	private String isbn;
-	private String coverfilepath;
-	private int categoryId;
+    @Column(name = "user_id")
+    private int userId;
+  
+    private String id;
+    
+    private String password;
+    private String nickname;
 }
