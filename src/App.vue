@@ -28,7 +28,7 @@ export default {
   mounted() {
     this.$store.state.tryingLogin = false;
     if (this.$router.currentRoute.name === 'Intro') {
-      this.$refs.appDiv.style.backgroundImage = "url('https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2200&q=80')"
+      this.$refs.appDiv.style.backgroundImage = "url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1600&q=80')"
       console.log(this.$refs.appDiv.style.backgroundImage)
       this.$refs.appDiv.style.backgroundSize= "cover"
     }

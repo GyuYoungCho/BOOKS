@@ -1,37 +1,50 @@
 <template>
-  <div>
-    <h1>나다 자식들아</h1>
-    <sign-in />
+  <div class="introPage">
+    <div class="intro">
+      <h1>
+        Let's BookS!<br />
+      </h1>
+      <button>시작하기</button>
+    </div>
+    <!-- <sign-in /> -->
   </div>
 </template>
 
 <script>
-import SignIn from '../components/modal/SignIn.vue';
+// import SignIn from "../components/modal/SignIn.vue";
 export default {
-  name:'',
-  components: {SignIn},
+  name: "",
+  // components: { SignIn },
   data() {
     return {
-      sampleData: ''
+      sampleData: "",
     };
   },
   beforeCreate() {},
-  created() {}, 
-  beforeMount() {}, 
-  mounted() {}, 
+  created() {},
+  beforeMount() {},
+  mounted() {},
   beforeUpdate() {},
   updated() {},
-  beforeUnmount() {}, 
+  beforeUnmount() {},
   unmounted() {},
-  methods: {}
-}
+  methods: {},
+};
 </script>
 
 <style scoped>
-  div {
-    height: 100vh;
-  }
-  h1 {
-    position: absolute;
-  }
+.introPage {
+  height: 100vh;
+}
+.intro {
+  position: absolute;
+  top: 20%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+}
+
+h1 {
+  font-size: 5rem;
+  color: white;
+}
 </style>
