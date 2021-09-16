@@ -1,5 +1,6 @@
 <template>
   <div class="bestSellerDiv">
+    <!-- Library -->
     <h1>this is bestseller page</h1>
 
     <carousel-3d :width="200" :height="300" :display="9" :autoplay="true" :autoplayHoverPause="true" :inverseScaling="100" :onMainSlideClick="test">

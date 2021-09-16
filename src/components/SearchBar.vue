@@ -4,9 +4,9 @@
       <v-container fluid>
         <v-row align="center" justify="end">
           <v-col class="d-flex" cols="2" sm="2">
-            <v-select :items="items" placeholder="통합검색"></v-select>
+            <v-select :items="items" placeholder="통합검색" v-model="selectedItem"></v-select>
           </v-col>
-
+          <p>{{ selectedItem }}</p>
           <v-col class="d-flex" cols="8" sm="8">
             <v-text-field placeholder="검색어를 입력하세요."></v-text-field>
           </v-col>
@@ -29,6 +29,7 @@ export default {
     return {
       model: null,
       items: ["저자", "제목"],
+      selectedItem: "통합검색",
     };
   },
   watch: {

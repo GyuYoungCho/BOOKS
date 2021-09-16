@@ -1,8 +1,9 @@
 <template>
-  <div>
+  <div class="recommendBooksDiv">
     <h1>this is RecommendBooks Page</h1>
     <div class="container">
       <div class="carousel">
+        <!-- rotateY x(컴포 개수) x = 360/deg -->
         <div
           v-for="(item, index) in items"
           :key="index"
@@ -37,6 +38,7 @@ export default {
         "https://images.pexels.com/photos/1394841/pexels-photo-1394841.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
         "https://images.pexels.com/photos/1394841/pexels-photo-1394841.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
         "https://images.pexels.com/photos/1394841/pexels-photo-1394841.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        
       ],
     };
   },
@@ -58,6 +60,10 @@ export default {
 </script>
 
 <style scoped>
+.recommendBooksDiv {
+  height: 560px;
+}
+
 .container {
   position: relative;
   width: 320px;
@@ -70,6 +76,7 @@ export default {
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
+  /* 도는 속도 */
   animation: rotate360 25s infinite forwards linear;
 }
 .carousel__face {
