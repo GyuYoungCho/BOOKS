@@ -53,9 +53,9 @@ export default {
     background-color: burlywood;
   } */
 .appDiv {
-  min-width: 600px;
-  max-width: 1080px;
+  /* min-width: 600px;
+  max-width: 1080px; */
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 60px;
 }
 </style>

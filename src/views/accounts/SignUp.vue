@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="signUpPage">
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-text-field
         v-model="id"
@@ -121,9 +121,17 @@ export default {
   methods: {
     validate() {
       this.$refs.form.validate();
+      console.log(this.$refs.form.validate()) // true false
     },
   },
 };
 </script>
 
-<style></style>
+<style scoped>
+.signUpPage {
+  max-width: 1080px;
+  margin: 0 auto;
+  margin-top: 48px;
+  text-align: center;
+}
+</style>

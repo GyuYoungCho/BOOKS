@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import MainPage from "../views/MainPage.vue";
 import SignUp from "../views/accounts/SignUp.vue";
 import Setting from "../views/accounts/Setting.vue";
+import BookInfo from "../views/BookInfo.vue";
 
 // import SignIn from "../components/modal/SignIn.vue";
 Vue.use(VueRouter);
@@ -31,6 +32,13 @@ const routes = [
     name: "Setting",
     component: Setting,
   },
+
+  // 책 상세정보
+  {
+    path: "/book/:isbn",
+    name: "BookInfo",
+    component: BookInfo,
+  }
 ];
 
 const router = new VueRouter({

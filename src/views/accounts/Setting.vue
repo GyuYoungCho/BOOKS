@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="settingPage">
     <div>검색 키워드 관리</div>
     <v-combobox
       v-model="chips"
@@ -106,4 +106,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.settingPage {
+  max-width: 1080px;
+  margin: 0 auto;
+  margin-top: 48px;
+  text-align: center;
+}
+</style>

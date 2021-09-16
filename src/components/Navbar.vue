@@ -31,8 +31,8 @@
             <li class="nav-item nav-mypage">
               <router-link :to="`/${id}/setting`">Mypage</router-link>
             </li>
-            <li class="nav-item nav-login">
-              <router-link to="/" @click="logout()">Logout</router-link>
+            <li class="nav-item nav-login"  @click="logout()">
+              <router-link to="">Logout</router-link>
             </li>
           </div>
         </div>
@@ -66,7 +66,7 @@ export default {
   methods: {
     ...mapActions(["logout"]),
     isLoggedIn() {
-      localStorage.setItem("key", "123")
+      // localStorage.setItem("key", "123")
       if (localStorage.getItem("key")) {
         console.log("있음");
         return true;

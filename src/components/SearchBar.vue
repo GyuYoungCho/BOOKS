@@ -4,13 +4,17 @@
       <v-container fluid>
         <v-row align="center" justify="end">
           <v-col class="d-flex" cols="2" sm="2">
-            <v-select :items="items" placeholder="통합검색" v-model="selectedItem"></v-select>
+            <v-select
+              :items="items"
+              placeholder="통합검색"
+              v-model="selectedItem"
+            ></v-select>
           </v-col>
           <p>{{ selectedItem }}</p>
-          <v-col class="d-flex" cols="8" sm="8">
+          <v-col class="d-flex" cols="8" sm="8" autocomplete>
             <v-text-field placeholder="검색어를 입력하세요."></v-text-field>
           </v-col>
-          <v-col class="d-flex" cols="1">
+          <v-col class="d-flex" cols="1" sm="1">
             <i class="fas fa-search"></i>
           </v-col>
         </v-row>
@@ -69,6 +73,7 @@ export default {
 ::v-deep .v-application--wrap {
   min-height: 0;
 }
+
 i {
   font-size: 1.5rem;
   cursor: pointer;
