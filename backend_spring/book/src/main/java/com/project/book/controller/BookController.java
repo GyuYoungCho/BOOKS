@@ -131,4 +131,19 @@ public class BookController {
         }
         return JsonArray;
     }
+	
+	@ApiOperation(value = "user가 검색한 책목록", response = String.class)
+	@GetMapping("/list/{userId}")
+	public ResponseEntity<List<Book>> userbooklist(@PathVariable("userId") int userId) throws NumberFormatException{
+		User user = userDao.getByUserId(userId);
+		List<UserLog> log = userlogDao.findByUserId(user);
+		
+		List<Book> booklist = new ArrayList<>();
+		
+		for(UserLog l : log) {
+			booklist.add(l.getBookId());
+		}
+		
+		return new ResponseEntity<>(booklist, HttpStatus.OK);
+	}
 }
