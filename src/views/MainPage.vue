@@ -9,10 +9,16 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 import SearchResult from '../components/card/SearchResult.vue';
 import BestSeller from '../components/carousel/BestSeller.vue';
 import RecommendBooks from '../components/carousel/RecommendBooks.vue';
 import SearchBar from '../components/SearchBar.vue';
+=======
+import BestSeller from "../components/carousel/BestSeller.vue";
+import RecommendBooks from "../components/carousel/RecommendBooks.vue";
+import SearchBar from "../components/SearchBar.vue";
+>>>>>>> 204269853d16012e014c2a4fd8be30b41590f628
 
 export default {
   name: "MainPage",
@@ -53,10 +59,10 @@ export default {
 </script>
 
 <style scoped>
-  .mainPage {
-    max-width: 1080px;
-    margin: 0 auto;
-    margin-top: 48px;
-    text-align: center;
-  }
+.mainPage {
+  max-width: 1080px;
+  margin: 0 auto;
+  margin-top: 48px;
+  text-align: center;
+}
 </style>

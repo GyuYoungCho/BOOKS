@@ -69,7 +69,7 @@ export default {
 ::v-deep .v-application--wrap {
   min-height: 0;
 }
-i{
+i {
   font-size: 1.5rem;
   cursor: pointer;
 }

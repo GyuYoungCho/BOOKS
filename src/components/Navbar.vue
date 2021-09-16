@@ -39,7 +39,7 @@
 <script>
 import "@/components/css/navbar.scss";
 import SignIn from "./modal/SignIn.vue";
-import { mapActions } from 'vuex';
+import { mapActions } from "vuex";
 
 export default {
   name: "Navbar",
@@ -50,26 +50,23 @@ export default {
     };
   },
   beforeCreate() {},
-  created() {
-  },
+  created() {},
   beforeMount() {},
-  mounted() {
-  },
+  mounted() {},
   beforeUpdate() {},
   updated() {},
   beforeUnmount() {},
   unmounted() {},
   methods: {
-    ...mapActions(['logout']),
+    ...mapActions(["logout"]),
     isLoggedIn() {
       // localStorage.setItem("key", "123")
       if (localStorage.getItem("key")) {
-        console.log('있음')
-        return true
-      }
-      else {
-        console.log(localStorage.getItem('key'))
-        return false
+        console.log("있음");
+        return true;
+      } else {
+        console.log(localStorage.getItem("key"));
+        return false;
       }
     },
   },
