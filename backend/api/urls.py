@@ -1,9 +1,9 @@
-from django.conf.urls import url
-from rest_framework.routers import DefaultRouter
-from api import views
+from django.urls import path
+from . import views
 
+app_name="views"
 
-router = DefaultRouter(trailing_slash=False)
-router.register(r"stores", views.StoreViewSet, basename="stores")
-
-urlpatterns = router.urls
+urlpatterns = [
+    path('main/best', views.best),
+    path('main/recommend/<userId>', views.recommend),
+]
