@@ -1,6 +1,6 @@
 <template>
   <div class="mainPage">
-    <h1>this is main page</h1>
+    <h1>this is main page!</h1>
     <search-bar />
     <best-seller />
     <recommend-books v-if="isLoggedIn()"></recommend-books>
@@ -30,6 +30,8 @@ export default {
   },
   beforeCreate() {},
   created() {
+    // 루트를 통해서 보여줄 컴포넌트를 지정할 것.
+    console.log(this.$router.currentRoute)
     const token = localStorage.getItem("token");
     if (token) {
       this.isLogin = true;

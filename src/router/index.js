@@ -1,8 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import MainPage from "../views/MainPage.vue";
-import SignUp from "../components/SignUp.vue";
-import Setting from "../components/Setting.vue";
+import SignUp from "../views/accounts/SignUp.vue";
+import Setting from "../views/accounts/Setting.vue";
 
 // import SignIn from "../components/modal/SignIn.vue";
 Vue.use(VueRouter);
@@ -26,7 +26,8 @@ const routes = [
     component: SignUp,
   },
   {
-    path: "/setting",
+    // 동적 라우팅
+    path: "/:id/setting",
     name: "Setting",
     component: Setting,
   },

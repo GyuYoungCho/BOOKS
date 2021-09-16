@@ -18,7 +18,7 @@
               @keydown.enter="onEnter"
             />
           </div> -->
-          <div class="nav-right">
+          <div class="nav-right" v-if="!isLoggedIn()">
             <li class="nav-item nav-login">
               <a id="loginBtn">Login</a>
               <sign-in v-show="this.$store.state.tryingLogin"></sign-in>
@@ -28,7 +28,12 @@
             </li>
           </div>
           <div class="nav-right" v-if="isLoggedIn()">
-            <li class="nav-item nav-login" @click="logout()">Logout</li>
+            <li class="nav-item nav-mypage">
+              <router-link :to="`/${id}/setting`">Mypage</router-link>
+            </li>
+            <li class="nav-item nav-login">
+              <router-link to="/" @click="logout()">Logout</router-link>
+            </li>
           </div>
         </div>
       </ul>
@@ -47,6 +52,7 @@ export default {
   data() {
     return {
       dialog: false,
+      id: '동적라우팅',
     };
   },
   beforeCreate() {},
@@ -60,7 +66,7 @@ export default {
   methods: {
     ...mapActions(["logout"]),
     isLoggedIn() {
-      // localStorage.setItem("key", "123")
+      localStorage.setItem("key", "123")
       if (localStorage.getItem("key")) {
         console.log("있음");
         return true;
