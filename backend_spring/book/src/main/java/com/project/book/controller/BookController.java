@@ -64,13 +64,12 @@ public class BookController {
 	}
 	
 	@ApiOperation(value = "book의 상세 정보", response = String.class)
-	@GetMapping("/detail/{bookId}/{userId}")
-	public ResponseEntity<BookDetail> bookdetail(@PathVariable("bookId") int bookId, @PathVariable("userId") int userId) throws NumberFormatException, ParseException{
+	@GetMapping("/detail/{isbn}/{userId}")
+	public ResponseEntity<BookDetail> bookdetail(@PathVariable("isbn") String isbn, @PathVariable("userId") int userId) throws NumberFormatException, ParseException{
 		
-		Book book = bookDao.getByBookId(bookId);
 		
 		String itemurl = "http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx?ttbkey="+ key + 
-				"&itemIdType=ISBN&ItemId="+ book.getIsbn() + "&output=js&Version=20131101";
+				"&itemIdType=ISBN&ItemId="+ isbn + "&output=js&Version=20131101";
 		JSONArray jsonArray=JSONParsing(itemurl);
 		
 		if (jsonArray.isEmpty()) return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
@@ -86,6 +85,7 @@ public class BookController {
                 data.get("author").toString(),
                 dateparse.parse(data.get("pubDate").toString()),
                 data.get("description").toString(),
+                data.get("isbn13").toString(),
                 Integer.parseInt(data.get("priceSales").toString()),
                 Integer.parseInt(data.get("priceStandard").toString()),
                 Integer.parseInt(data.get("mileage").toString()),
@@ -96,7 +96,9 @@ public class BookController {
                 Integer.parseInt(subinfodata.get("itemPage").toString())
         );
 		
-		if(bookdetail!=null && userId!=0) {
+		Book book = bookDao.getByIsbn(isbn);
+		
+		if(userId!=0 && book!=null) {
 			User user = userDao.getByUserId(userId);
 			UserLog log =  new UserLog(0,new Date(),user,book);
 			userlogDao.save(log);
