@@ -31,6 +31,7 @@ public class BookDetail {
 	
 	private String description;
 	
+	private String isbn13;
 	private int priceSales;
 	private int priceStandard;
 	private int mileage;
