@@ -28,11 +28,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.book.dao.BookDao;
 import com.project.book.dao.UserDao;
+import com.project.book.dao.UserKeywordDao;
 import com.project.book.dao.UserLogDao;
 import com.project.book.dto.Book;
 import com.project.book.dto.BookDetail;
 import com.project.book.dto.Bookapi;
 import com.project.book.dto.User;
+import com.project.book.dto.UserKeyword;
 import com.project.book.dto.UserLog;
 
 import io.swagger.annotations.ApiOperation;
@@ -51,12 +53,23 @@ public class BookController {
 	@Autowired
 	UserLogDao userlogDao;
 	
+	@Autowired
+	UserKeywordDao userKeywordDao;
+	
 	Bookapi api;
 	String key = new Bookapi().getKey();
 	
 	@ApiOperation(value = "단어를 포함한 book 검색", response = String.class)
 	@GetMapping("/search")
-	public Page<Book> getBookSearchList(@RequestParam("keyword") String keyword ,final Pageable pageable) throws NumberFormatException, ParseException{
+	public Page<Book> getBookSearchList(@RequestParam("keyword") String keyword , @RequestParam("userId") String userId,
+			final Pageable pageable) throws NumberFormatException, ParseException{
+		
+		if(Integer.parseInt(userId)!=0 && !keyword.equals("")) {
+			User user = userDao.getByUserId(Integer.parseInt(userId));
+			UserKeyword log =  new UserKeyword(0,user,keyword,new Date());
+			userKeywordDao.save(log);
+		}
+		
 		keyword = "%" + keyword + "%";
 		Page<Book> bookpage = bookDao.findByTitleKeyword(keyword, pageable);
 		List<Book> booklist = bookpage.toList();
