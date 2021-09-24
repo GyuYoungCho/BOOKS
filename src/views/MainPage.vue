@@ -4,7 +4,7 @@
     <search-bar />
     <best-seller />
     <recommend-books v-if="isLoggedIn()"></recommend-books>
-    <search-result />
+    <search-result v-show="this.$router.history.current.name === 'SearchResult'"/>
   </div>
 </template>
 
@@ -36,11 +36,14 @@ export default {
     if (token) {
       this.isLogin = true;
     }
+    console.log(this.$router.history)
+    // this.$store.dispatch('categoryList')
   },
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},
-  updated() {},
+  updated() {
+  },
   beforeUnmount() {},
   unmounted() {},
   methods: {

@@ -46,7 +46,8 @@ export default {
   beforeMount() {}, 
   mounted() {}, 
   beforeUpdate() {},
-  updated() {},
+  updated() {
+  },
   beforeUnmount() {}, 
   unmounted() {},
   methods: {}
@@ -67,7 +68,7 @@ export default {
 
 img {
   width: 500px;
-  height: 800px;
+  height: 600px;
   object-fit: cover;
   /* margin-right: 20px; */
   /* border: 1px solid; */

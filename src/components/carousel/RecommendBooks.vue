@@ -12,8 +12,9 @@
             transform: `rotateY(  ${40 * index}deg) translateZ(430px)`,
             'background-image': `url(${item})`,
           }"
+          @click="clicked(item)"
         >
-          <span @click="clicked()">This is something</span>
+          <span>This is something</span>
           <span>{{ 40 * index }}</span>
         </div>
       </div>
@@ -52,57 +53,14 @@ export default {
   unmounted() {},
   computed: {},
   methods: {
-    clicked() {
+    clicked(item) {
       alert("클릭하셨습니다!");
+      console.log(item)
     },
   },
 };
 </script>
 
-<style scoped>
-.recommendBooksDiv {
-  height: 560px;
-}
-
-.container {
-  position: relative;
-  width: 320px;
-  /* margin: 100px auto 0 auto; */
-  perspective: 1000px;
-}
-
-.carousel {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  /* 도는 속도 */
-  animation: rotate360 25s infinite forwards linear;
-}
-.carousel__face {
-  position: absolute;
-  width: 300px;
-  height: 187px;
-  top: 20px;
-  left: 0px;
-  right: 0px;
-  background-size: cover;
-  box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.5);
-  display: flex;
-  border-radius: 10px;
-}
-
-span {
-  margin: auto;
-  font-size: 2rem;
-}
-
-@keyframes rotate360 {
-  from {
-    transform: rotateY(0deg);
-  }
-  to {
-    transform: rotateY(-360deg);
-  }
-}
+<style lang="scss" scoped>
+@import "../css/recommendbooks.scss";
 </style>

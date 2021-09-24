@@ -2,13 +2,13 @@
   <div v-if="this.$router.currentRoute.name !== 'Intro'">
     <nav>
       <ul class="nav-container">
-        <div class="nav-left">
+        <div class="nav-left" @click="home()">
           <li class="nav-item nav-logo">
-            <router-link to="/">
+            <router-link to="">
               <img class="logo" src="../assets/BOOKS-logo-black.png" alt="Books logo" />
             </router-link>
           </li>
-          <router-link to="/" class="text-logo"> BOOKS </router-link>
+          <router-link to="" class="text-logo"> BOOKS </router-link>
         </div>
         <div class="nav-right">
           <!-- <div class="search-bar" id="search-bar">
@@ -75,6 +75,15 @@ export default {
         return false;
       }
     },
+
+    home() {
+      if (this.$router.history.current.name === 'MainPage') {
+        this.$router.go()
+      } else {
+        this.$router.push('/')
+        this.$router.go()
+      }
+    }
   },
 };
 </script>

@@ -27,7 +27,7 @@
       ></v-text-field>
 
       <v-text-field
-        v-model="name"
+        v-model="nickname"
         :rules="nameRules"
         label="별명"
         required
@@ -54,6 +54,8 @@
   </v-app>
 </template>
 <script>
+import axios from 'axios'
+
 export default {
   components: {},
   data: () => ({
@@ -61,7 +63,11 @@ export default {
     id: "",
     password: "",
     passwordChk: "",
-    name: "",
+    nickname: "",
+    error: {
+      id: "",
+      nickname: "",
+    },
 
     idRules: [
       (v) => !!v || "아이디를 입력해주세요.",
@@ -121,8 +127,22 @@ export default {
   methods: {
     validate() {
       this.$refs.form.validate();
-      console.log(this.$refs.form.validate()) // true false
+      console.log(this.$refs.form.validate()); // true false
     },
+
+    async idCheck(id) {
+      // 둘중에 어느방식인지 확인 필요함
+      const res = await axios.get(`user/check/${id}`, { params: { userId: id }});
+      console.log(res);
+      if (res.data.data.errors) {
+        this.error.id = "아이디가 중복됩니다."
+      }
+    },
+
+    async nickNameCheck() {
+      const res = await axios.get(`user/check/${this.nickname}`)
+      console.log(res);
+    }
   },
 };
 </script>
