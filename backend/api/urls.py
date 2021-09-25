@@ -1,0 +1,9 @@
+from django.urls import path
+from . import views
+
+app_name="views"
+
+urlpatterns = [
+    path('main/best', views.best),
+    path('main/recommend/<userId>', views.recommend),
+]
