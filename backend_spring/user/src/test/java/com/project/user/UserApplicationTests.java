@@ -1,4 +1,4 @@
-package com.ssafy.project2;
+package com.project.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
