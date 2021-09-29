@@ -5,6 +5,14 @@ from requests.compat import urlparse, urljoin
 from requests.exceptions import HTTPError
 from .bookapi.bookapi import bookapikey
 
+from django.db import connection
+from .models import Book
+from .models import User
+from .models import Category
+from .models import Review
+from .models import UserLog
+from .models import UserCategory
+
 headers = {'user-agent':"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36"}
 
 def canfetch(url, agent='*', path='/'):
