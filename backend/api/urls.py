@@ -5,5 +5,5 @@ app_name="views"
 
 urlpatterns = [
     path('main/best', views.best),
-    path('main/recommend/<userId>', views.recommend),
+    path('main/recommend/<user_id>', views.recommend),
 ]
