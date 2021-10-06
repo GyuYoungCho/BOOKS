@@ -4,10 +4,12 @@ import router from '../../router'
 const state = {
   searchBook: null,
   bookDetail: null,
+  userBookList: null
 }
 const getters = {
   getSearchBook: state => state.searchBook,
   getBookDetail: state => state.bookDetail,
+  getUserBookList: state => state.userBookList,
 }
 const mutations = {
   SET_SEARCHBOOK(state, res) {
@@ -15,6 +17,9 @@ const mutations = {
   },
   SET_BOOKDETAIL(state, res) {
     state.bookDetail = res
+  },
+  SET_USERBOOKLIST(state, res) {
+    state.userBookList = res
   }
 }
 const actions = {
@@ -29,8 +34,9 @@ const actions = {
 
   // 유저 책 검색 목록
   async userBookList(context) {
-    const res = await axios.get(`book/list/${context.rootState.loginId}`, { params: { userId : context.rootState.loginId } })
-    console.log(res)
+    const res = await axios.get(`http://localhost:8082/book/list/${localStorage.getItem("primarykey")}`, { params: { userId : localStorage.getItem("primarykey")} })
+    console.log(res, context)
+    context.commit('SET_USERBOOKLIST', res.data)
   },
 
   // 북 상세 + isbn은 어디서?

@@ -39,13 +39,13 @@
       <v-card-text>
         <h2 class="text-h6 mb-2">관심있는 해시태그를 선택해 주세요.</h2>
 
-        <v-chip-group v-model="selected" column multiple>
+        <v-chip-group v-model="signUpData.hashtag" column multiple>
           <v-chip v-for="hashtag in hashtags" :key="hashtag">
             {{ hashtag }}
           </v-chip>
         </v-chip-group>
       </v-card-text>
-      {{ selected }}
+      {{ signUpData.hashtag }}
     </v-card>
 
     <v-btn :disabled="!valid" color="success" class="mr-4" @click="signUp(signUpData)">
@@ -69,6 +69,9 @@ export default {
       id: "",
       password: "",
       nickname: "",
+      hashtag: [
+
+      ],
     },
 
     idRules: [
@@ -141,6 +144,9 @@ export default {
         alert("아이디가 중복됩니다.")
         this.error.id = "아이디가 중복됩니다."
       }
+      else {
+        alert("아이디를 사용가능합니다.")
+      }
     },
     
     // 닉네임 중복 체크
@@ -152,9 +158,20 @@ export default {
         alert("닉네임이 중복됩니다.")
         this.error.nickname = "닉네임이 중복됩니다."
       }
+      else {
+        alert("닉네임을 사용가능합니다.")
+      }
     },
     signUp(signUpData) {
+      
+      // console.log(this.signUpData.hashtag)
+      for (var i = 0; i<this.signUpData.hashtag.length; i++) {
+        this.signUpData.hashtag[i]=this.hashtags[i];
+        console.log(this.signUpData.hashtag)
+      }
+
       this.$store.dispatch('signUp', signUpData)  
+      
     }
   },
 };

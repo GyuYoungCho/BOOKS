@@ -46,12 +46,9 @@ export default {
   components: {},
   data: () => ({
     chips: [
-      "Programming",
-      "Playing video games",
-      "Watching movies",
-      "Sleeping",
+      
     ],
-    selected: [],
+    selected: [1, 3],
     hashtags: [
       "가정/요리/뷰티",
       "건강/취미/레저",
@@ -86,7 +83,11 @@ export default {
     ],
   }),
   beforeCreate() {},
-  created() {},
+  created() {
+    this.$store.dispatch('userBookList')
+    this.chips = this.$store.getters['getUserBookList']
+    console.log(this.chips)
+  },
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},
