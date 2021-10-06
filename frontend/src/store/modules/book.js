@@ -23,7 +23,7 @@ const actions = {
     console.log(context.rootState)
     const res = await axios.get('http://localhost:8082/book/search/', { params: {keyword : keyword, userId: localStorage.getItem('id') }, headers: {}  })
     console.log(res)
-    context.commit('SET_SEARCHBOOK', res)
+    context.commit('SET_SEARCHBOOK', res.data.content)
     router.go()
   },
 
@@ -35,15 +35,16 @@ const actions = {
 
   // 북 상세 + isbn은 어디서?
   async bookDetail(context, isbn) {
-    if (context.rootState.loginId) {
-      const res = await axios.get(`book/detail/${isbn}/${context.rootState.loginId}`)
+    if (localStorage.getItem("primarykey")) {
+      const res = await axios.get(`http://localhost:8082/book/detail/${isbn}/${localStorage.getItem("primarykey")}`)
       console.log(res)
-      context.commit('SET_BOOKDETAIL', res)
+      context.commit('SET_BOOKDETAIL', res.data)
+      router.push(`/book/${isbn}`)
     }
     else {
-      const res = await axios.get(`book/detail/${isbn}/0`)
+      const res = await axios.get(`http://localhost:8082/book/detail/${isbn}/0`)
       console.log(res)
-      context.commit('SET_BOOKDETAIL', res)
+      context.commit('SET_BOOKDETAIL', res.data)
     }
   }
 }

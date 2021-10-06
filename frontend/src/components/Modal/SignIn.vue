@@ -54,6 +54,7 @@ export default {
       signInData: {
         id: "",
         password: "",
+        user_id: ""
       },
     };
   },

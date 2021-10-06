@@ -35,12 +35,12 @@ const actions = {
     console.log(loginData)
     const res = await axios.post('http://localhost:8500/api/user/login', loginData, {login: loginData})
     console.log(res)
-    localStorage.setItem("key", res.data)
+    localStorage.setItem("key", res.data.accessToken)
     context.commit('SET_AUTHTOKEN', localStorage.getItem("key"))
     
-    context.commit('SET_ID', loginData.id)
+    context.commit('SET_ID', res.data.user_id)
 
-    localStorage.setItem("id", loginData.id)
+    localStorage.setItem("primarykey", res.data.user_id)
     // 로그인 아이디 보내서 저장하기
    //  router.go()
   },

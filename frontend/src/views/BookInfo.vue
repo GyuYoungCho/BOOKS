@@ -1,12 +1,12 @@
 <template>
   <div class="bookInfoPage">
     <div class="bookMainInfo">
-      <h1>도서명</h1>
-      <p>저자명, 출간일, ISBN</p>
+      <h1>{{bookData.title}}</h1>
+      <p>{{bookData.author}},{{bookData.pubDate}}, {{bookData.isbn13}}</p>
       <hr>
     </div>
     <div style="display:flex; flex-direction:row; justify-content:space-between" >
-      <img src="https://images.unsplash.com/photo-1507608616759-54f48f0af0ee?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2134&q=80" alt="이미지없음">
+      <img :src="`${bookData.coverFilepath}`" alt="이미지없음">
       <div class="bookInfo">
         <ul>
           <li style="list-style:none;">
@@ -18,7 +18,7 @@
             </div>
           </li>
         </ul>
-        <p>요약설명구</p>
+        <p>{{bookData.description}}</p>
         <br>
         <p>회원리뷰평점</p>
         <br>
@@ -45,6 +45,8 @@ export default {
   created() {
     console.log('접근체크')
     this.bookData = this.$store.getters['getBookDetail']
+    this.bookData.coverFilepath = this.bookData.coverFilepath.replace("sum","500")
+    console.log(this.bookData)
   }, 
   beforeMount() {}, 
   mounted() {}, 

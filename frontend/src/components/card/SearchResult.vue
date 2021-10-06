@@ -3,9 +3,9 @@
     <h1>if you search books, we will show you this page</h1>
     <div id="columns">
       <figure v-for="(data, index) in books" :key="index">
-        <img :src="`${data[0]}`" />
+        <img :src="`${data.coverfilepath}`" @click="bookdetail(data.isbn)"/>
         <figcaption>
-          {{ data[1] }}
+          {{ data.title }}
         </figcaption>
       </figure>
     </div>
@@ -64,14 +64,21 @@ export default {
     };
   },
   beforeCreate() {},
-  created() {},
+  created() {
+    this.books = this.$store.state.book.searchBook
+    console.log(this.books)
+  },
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},
   updated() {},
   beforeUnmount() {},
   unmounted() {},
-  methods: {},
+  methods: {
+    bookdetail(isbn) {
+      this.$store.dispatch('bookDetail', isbn)
+    }
+  },
 };
 </script>
 

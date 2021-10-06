@@ -8,6 +8,7 @@ import main from './modules/main'
 import category from './modules/category'
 import review from './modules/review'
 import keyword from './modules/keyword'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex);
 
@@ -26,4 +27,7 @@ export default new Vuex.Store({
     review,
     keyword
   },
+  plugins: [
+    createPersistedState()
+  ]
 });
