@@ -36,7 +36,7 @@
       {{ selected }}
     </v-card>
 
-    <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">
+    <v-btn color="success" class="mr-4" @click="validate">
       설정 완료
     </v-btn>
   </div>
@@ -45,6 +45,9 @@
 export default {
   components: {},
   data: () => ({
+    rawChips: [
+
+    ],
     chips: [
       
     ],
@@ -84,8 +87,20 @@ export default {
   }),
   beforeCreate() {},
   created() {
+    console.log(localStorage.getItem('primarykey'))
+    if ( !localStorage.getItem('primarykey') ) {
+      this.$router.push('/')
+    }
     this.$store.dispatch('userBookList')
-    this.chips = this.$store.getters['getUserBookList']
+    this.rawChips = this.$store.getters['getUserBookList']
+    for ( var i = 0; i < this.rawChips.length; i++) {
+      if ( this.chips.indexOf(this.rawChips[i].title) !== -1 ) {
+        console.log()
+      }
+      else {
+        this.chips.push(this.rawChips[i].title)
+      }
+    }
     console.log(this.chips)
   },
   beforeMount() {},

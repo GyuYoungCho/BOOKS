@@ -166,7 +166,7 @@ export default {
       
       // console.log(this.signUpData.hashtag)
       for (var i = 0; i<this.signUpData.hashtag.length; i++) {
-        this.signUpData.hashtag[i]=this.hashtags[i];
+        //this.signUpData.hashtag[i]=this.hashtag[i];
         console.log(this.signUpData.hashtag)
       }
 

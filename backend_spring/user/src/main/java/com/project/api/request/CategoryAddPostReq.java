@@ -1,5 +1,7 @@
 package com.project.api.request;
 
+import com.project.entity.Category;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -10,18 +12,13 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@ApiModel("UserRegisterPostRequest")
-public class UserRegisterPostReq {
-	
-	@ApiModelProperty(name="유저 ID", example="ssafy_web") 
-	String id;
+@ApiModel("CategoryAddPostRequest")
+public class CategoryAddPostReq {
 	
 	@ApiModelProperty(name="유저 primary ID", example="1") 
 	int user_id;
 	
-	@ApiModelProperty(name="유저 Password", example="your_password")
-	String password;
+	@ApiModelProperty(name="유저 tag", example="tag")
+	int tag;
 	
-	@ApiModelProperty(name="유저 닉네임", example="닉네임")
-	String nickname;
 }

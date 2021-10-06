@@ -26,7 +26,7 @@ const actions = {
   // 책 검색
   async searchBook(context, keyword) {
     console.log(context.rootState)
-    const res = await axios.get('http://localhost:8082/book/search/', { params: {keyword : keyword, userId: localStorage.getItem('id') }, headers: {}  })
+    const res = await axios.get('http://localhost:8082/book/search/', { params: {keyword : keyword, userId: localStorage.getItem('primarykey') }, headers: {}  })
     console.log(res)
     context.commit('SET_SEARCHBOOK', res.data.content)
     router.go()

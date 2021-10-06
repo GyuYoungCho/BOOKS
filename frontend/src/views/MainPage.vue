@@ -38,7 +38,6 @@ export default {
     }
     console.log(this.$router.history)
     // this.$store.dispatch('categoryList')
-    this.$store.dispatch('userBookList')
   },
   beforeMount() {},
   mounted() {},

@@ -3,6 +3,7 @@ package com.project.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +27,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
+@CrossOrigin
 @Api(value = "인증 API", tags = {"user"})
 @RestController
 @RequestMapping("/api/user")
@@ -38,7 +40,7 @@ public class UserController {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 	
-	@PutMapping("/login")
+	@PostMapping("/login")
 	@ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.")
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
@@ -49,9 +51,13 @@ public class UserController {
 	public ResponseEntity<UserLoginPostRes> login(@RequestBody @ApiParam(value="로그인 정보", required = true) UserLoginPostReq loginInfo) {
 		String id = loginInfo.getId();
 		String password = loginInfo.getPassword();
-		
+		int user_id;
+		System.out.println(id);
+		System.out.println(password);
 		//아이디로 수정
 		User user = userService.getUserById(id);
+		user_id = user.getUserId();
+		System.out.println(user_id);
 //		Profile profile = profileService.getProfileByUserId(user.getUserId());
 		
 		// 로그인 요청한 유저로부터 입력된 패스워드 와 디비에 저장된 유저의 암호화된 패스워드가 같은지 확인.(유효한 패스워드인지 여부 확인)
@@ -60,27 +66,37 @@ public class UserController {
 			log.info("로그인 성공했습니다");
 			String token = JwtTokenUtil.getToken(id);
 			userService.changeToken(id, token);
-			return ResponseEntity.ok(UserLoginPostRes.of(200, "어서오세요", token));
+			return ResponseEntity.ok(UserLoginPostRes.of(200, token, id, user_id));
 		}
 		// 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
-		return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", null));
+		return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", null, 0));
 	}
 	
 	@PostMapping("/signup")
 	@ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.") 
-	@ApiResponses({
-        @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
-        @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
-        @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
-        @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
-    })
+//	@ApiResponses({
+//        @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+//        @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
+//        @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+//        @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+//    })
 	public ResponseEntity<? extends BaseResponseBody> register(
 			@RequestBody @ApiParam(value="회원가입 정보", required = true) UserRegisterPostReq registerInfo) {
 		
 		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
+
+		int user_id = registerInfo.getUser_id();
+		String id = registerInfo.getId();
+		String password = registerInfo.getPassword();
+		String nickname = registerInfo.getNickname();
+		System.out.println("*******************");
+		System.out.println(user_id);
+		System.out.println(id);
+		System.out.println(registerInfo.getPassword());
+		System.out.println(registerInfo.getNickname());
 		User user = userService.createUser(registerInfo);
 		
-		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", user_id, id, password, nickname));
 	}
 	
 	/*

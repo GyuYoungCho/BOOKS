@@ -61,7 +61,6 @@ export default {
   unmounted() {},
   methods: {
     search() {
-      console.log("dkdk")
       this.$store.dispatch('searchBook', this.inputText)
       this.$router.push(`/search/${this.inputText}`)
       // this.$router.go()
