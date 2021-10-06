@@ -22,13 +22,13 @@ const mutations = {
 }
 const actions = {
   async bestseller(context) {
-    const res = await axios.get('main/best/')
-    console.log(res, context)
-    context.commit('SET_BESTSELLER', res)
+    const res = await axios.get('http://127.0.0.1:8000/main/best')
+    console.log(res.data)
+    context.commit('SET_BESTSELLER', res.data)
   },
   async recommendBook(context) {
-    const res = await axios.get(`main/recommend/${context.rootState.loginId}`)
-    console.log(res)
+    const res = await axios.get(`http://127.0.0.1:8000/main/recommend/${localStorage.getItem("primarykey")}`)
+    console.log(res, context)
   },
 }
 

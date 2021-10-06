@@ -1,32 +1,42 @@
 <template>
   <div class="bookInfoPage">
     <div class="bookMainInfo">
-      <h1>{{bookData.title}}</h1>
-      <p>{{bookData.author}},{{bookData.pubDate}}, {{bookData.isbn13}}</p>
+      <h1>{{ bookData.title }}</h1>
+      <p>{{ bookData.author }}</p>
       <hr>
     </div>
     <div style="display:flex; flex-direction:row; justify-content:space-between" >
       <img :src="`${bookData.coverFilepath}`" alt="이미지없음">
       <div class="bookInfo">
         <ul>
-          <li style="list-style:none;">
+          <li style="list-style:none; margin-bottom: 10px">
             <div style="position:absolute; width: 100px;"> 
-              테스트
+              출판사
             </div>
             <div style="margin-left: 100px">
-              안녕하세요 여러분?
+              {{ bookData.publisher }}
+            </div>
+          </li>
+          <li style="list-style:none; margin-bottom: 10px">
+            <div style="position:absolute; width: 100px;"> 
+              ISBN 번호
+            </div>
+            <div style="margin-left: 100px">
+              {{ bookData.isbn13 }}
+            </div>
+          </li>
+          <li style="list-style:none; margin-bottom: 10px">
+            <div style="position:absolute; width: 100px;"> 
+              출간일
+            </div>
+            <div style="margin-left: 100px">
+              {{ bookData.pubDate }}
             </div>
           </li>
         </ul>
         <p>{{bookData.description}}</p>
         <br>
-        <p>회원리뷰평점</p>
-        <br>
-        <p>책소개(api 제공 받을 수 있는 경우에?)</p>
-        <br>
-        <p>카테고리 분류</p>
-        <br>
-        <p>상품페이지 URL 주소</p>
+        <a :href="`${bookData.link}`">알라딘으로!</a>
       </div>
     </div>
   </div>
@@ -74,12 +84,20 @@ export default {
 img {
   width: 500px;
   height: 600px;
-  object-fit: cover;
+  object-fit: contain;
   /* margin-right: 20px; */
   /* border: 1px solid; */
 }
 
 .bookInfo {
   width: 500px;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+li {
+  font-size: 1.3rem;
 }
 </style>

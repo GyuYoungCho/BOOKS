@@ -5,7 +5,7 @@
 
     <carousel-3d ref="bestseller" :width="300" :height="400" :display="9" :autoplay="true" :inverseScaling="100" :onMainSlideClick="bookDetail">
       <slide v-for="(slide, i) in slides" :index="i" :key="i" :id="`slide${i}`" style="border-radius: 7px;" >
-        <img src="../../assets/BOOKS-logo.png" alt="" @mouseover="hoverCheck()" @mouseout="mouseOutCheck()">
+        <img :src="`${bestsellers[i].cover}`" alt="" @mouseover="hoverCheck()" @mouseout="mouseOutCheck()">
         <span v-show="isHover" class="title">You know what?</span>
         <p>
           {{ i }}, 도서명
@@ -36,7 +36,7 @@ export default {
   beforeCreate() {},
   async created() {
     await this.$store.dispatch('bestseller')
-    this.bestsellers = await this.$store.getters('getBestseller')
+    this.bestsellers = await this.$store.getters['getBestseller']
     console.log(this.bestsellers)
     // await axios.get('/main/best')
       // .then()
