@@ -1,3 +1,4 @@
+import os
 import requests
 import time
 from urllib.robotparser import RobotFileParser
@@ -7,15 +8,13 @@ from .bookapi.bookapi import bookapikey
 
 
 from django.db import connection
-from .models import *
+from .data_processing import *
+from .util import *
 
 import pandas as pd
 import xlearn as xl
 
-from sklearn.preprocessing import MultiLabelBinarizer
-from sklearn.decomposition import PCA
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.cluster import KMeans
+from .FieldAwareFMRecommender import *
 
 
 headers = {
@@ -54,129 +53,31 @@ def download(url, params={}, headers={}, method='GET', limit=3):
 def best():
     url = "https://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey={api}&QueryType=Bestseller&MaxResults=100&start=1&SearchTarget=Book&output=js&Version=20131101".format(
         api=bookapikey())
+    get_project_root_path()
     resp = download(url, method='GET')
     result = resp.json()
     return result['item']
 
 
-def user_log_data():
-    cursor.execute("SELECT * FROM user_log")
+def fit(user_id):
+    data = processing(user_id)
+    ffm_data_path = os.path.join(
+        get_project_root_path(), "resources", "ffm_data")
+    model = FieldAwareFMRecommender(data, model_type="fm",
+                                    train_svm_file_path=os.path.join(
+                                        ffm_data_path, "train.txt"),
+                                    valid_svm_file_path=os.path.join(
+                                        ffm_data_path, "test.txt"),
+                                    approximate_recommender=best_model, ICM_train=ICM_all, UCM_train=UCM_all,
+                                    item_feature_fields=item_feature_fields, user_feature_fields=user_feature_fields,
+                                    max_items_to_predict=20)
 
-    result = []
-    for c in cursor:
-        res = dict()
-        res['reg_time'] = c[1]
-        res['user_id'] = c[2]
-        res['book_id'] = c[3]
-        result.append(res)
-    return pd.DataFrame(result).sort_values(by='reg_time', ascending=False).drop_duplicates(['user_id', 'book_id'], keep='first').reset_index(drop=True)
+    model.fit(latent_factors=100, learning_rate=0.01,
+              epochs=1000, regularization=1e-6, stop_window=5)
 
-
-def book_data():
-    cursor.execute("SELECT * FROM book")
-
-    result = []
-    for c in cursor:
-        res = dict()
-        res['book_id'] = c[0]
-        res['category_id'] = c[4]
-        result.append(res)
-
-    return pd.DataFrame(result)
-
-
-def user_category_data():
-    cursor.execute("SELECT * FROM user_category")
-
-    result = []
-    for c in cursor:
-        res = dict()
-        res['user_id'] = c[1]
-        res['user_category_id'] = c[2]
-        result.append(res)
-
-    return pd.DataFrame(result)
-
-
-def review_data():
-    cursor.execute("SELECT * FROM review")
-
-    result = []
-    for c in cursor:
-        res = dict()
-        res['book_id'] = c[5]
-        res['user_id'] = c[4]
-        res['rank'] = c[1]
-        res['reg_time'] = c[3]
-        res['content'] = c[2]
-        result.append(res)
-
-    return pd.DataFrame(result).sort_values(by='reg_time', ascending=False).drop_duplicates(['user_id', 'book_id'], keep='first').reset_index(drop=True)
+    return "success"
 
 
 def recommend(user_id):
 
-    # 데이터 불러오기
-    user_log = user_log_data()
-    user_category = user_category_data()
-    book = book_data()
-    review = review_data()
-
-    # 리뷰 데이터와 로그 데이터 합치고 전처리
-    data1 = pd.merge(user_log[["book_id", "user_id"]],
-                     review, how="left", on=["book_id", "user_id"])
-    data1['content'].fillna('', inplace=True)
-    data1['content'] = data1['content'].str.replace(
-        pat=r'[^A-Za-z0-9가-힣 ]', repl=r'', regex=True).str.strip()
-    data1['rank'].fillna(int(data1['rank'].mean()), inplace=True)
-    data1 = pd.merge(data1, book, on="book_id")
-
-    # user의 관심 카테고리 user_id별 리스트화
-    user_category['user_category_id'] = user_category['user_category_id'].astype(
-        str)
-    user_cate = user_category.groupby(
-        'user_id').agg(lambda x: ' '.join(set(x)))
-    user_cate['user_category_id'] = user_cate['user_category_id'].str.split(
-        ' ')
-
-    cate_list = book['category_id'].unique()
-    for cate in cate_list:
-        user_cate['c_' + str(cate)] = 0
-
-    # user의 관심 카테고리 및 로그에 쌓인 카테고리 평점을 평균낸어 합체
-    mlb = MultiLabelBinarizer()
-    user_cate[user_cate.columns[1:]] = mlb.fit_transform(
-        user_cate['user_category_id'])
-    user_cate.drop('user_category_id', axis=1, inplace=True)
-    user_see_cate = data1.groupby(['user_id', 'category_id'])[
-        'rank'].mean().unstack().fillna(0)
-    user_cate = pd.concat([user_cate, user_see_cate], axis=1).fillna(0)
-
-    # 리뷰 데이터 tf idf
-    tfidf = TfidfVectorizer(stop_words='english', max_features=300)
-    tfidf_matrix = tfidf.fit_transform(data1['content'])
-    tfidf_data = pd.DataFrame(tfidf_matrix.toarray(),
-                              index=data1['user_id']).reset_index()
-    tfidf_g_data = tfidf_data.groupby('user_id').mean()
-    user_cate_tf = pd.concat([user_cate, tfidf_g_data], axis=1).fillna(0)
-
-    # 차원 축소 및 클러스터링
-
-    pca = PCA(n_components=3)
-    pca.fit(user_cate_tf)
-    pca_samples = pca.transform(user_cate_tf)
-    ps = pd.DataFrame(pca_samples)
-    kmeans = KMeans(n_clusters=4)
-    kmeans.fit(ps)
-
-    pred = kmeans.predict(ps.loc[int(user_id), :].to_frame().T)
-    user_cate_tf['cluster'] = kmeans.labels_
-    user_cate_tf_cluster = user_cate_tf[user_cate_tf['cluster'] == pred[0]].drop(
-        'cluster', axis=1)
-
-    user_log_my = user_log.iloc[user_cate_tf_cluster.index, :]
-    my_book = pd.merge(user_log_my[["book_id", "user_id"]], review, on=[
-                       "book_id", "user_id"])
-    my_book_rank = my_book.groupby(['user_id', 'book_id'])[
-        "rank"].mean().unstack().fillna(0)
     return ''
