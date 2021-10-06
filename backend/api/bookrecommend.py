@@ -12,6 +12,7 @@ from .models import *
 import pandas as pd
 import xlearn as xl
 
+from sklearn.preprocessing import MultiLabelBinarizer
 from sklearn.decomposition import PCA
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
@@ -113,12 +114,6 @@ def review_data():
     return pd.DataFrame(result).sort_values(by='reg_time', ascending=False).drop_duplicates(['user_id', 'book_id'], keep='first').reset_index(drop=True)
 
 
-def cate_coding(x):
-    for cate in x['user_category_id']:
-        x['c_'+str(cate)] = 1
-    return x
-
-
 def recommend(user_id):
 
     # 데이터 불러오기
@@ -149,11 +144,13 @@ def recommend(user_id):
         user_cate['c_' + str(cate)] = 0
 
     # user의 관심 카테고리 및 로그에 쌓인 카테고리 평점을 평균낸어 합체
-    user_cate = user_cate.apply(cate_coding, axis=1)
-    user_pre_cate = user_cate.drop('user_category_id', axis=1)
-    user_see_cate = data1.pivot_table(
-        values='rank', index='user_id', columns='category_id').fillna(0)
-    user_cate = pd.concat([user_pre_cate, user_see_cate], axis=1).fillna(0)
+    mlb = MultiLabelBinarizer()
+    user_cate[user_cate.columns[1:]] = mlb.fit_transform(
+        user_cate['user_category_id'])
+    user_cate.drop('user_category_id', axis=1, inplace=True)
+    user_see_cate = data1.groupby(['user_id', 'category_id'])[
+        'rank'].mean().unstack().fillna(0)
+    user_cate = pd.concat([user_cate, user_see_cate], axis=1).fillna(0)
 
     # 리뷰 데이터 tf idf
     tfidf = TfidfVectorizer(stop_words='english', max_features=300)
@@ -169,8 +166,17 @@ def recommend(user_id):
     pca.fit(user_cate_tf)
     pca_samples = pca.transform(user_cate_tf)
     ps = pd.DataFrame(pca_samples)
-
     kmeans = KMeans(n_clusters=4)
     kmeans.fit(ps)
 
+    pred = kmeans.predict(ps.loc[int(user_id), :].to_frame().T)
+    user_cate_tf['cluster'] = kmeans.labels_
+    user_cate_tf_cluster = user_cate_tf[user_cate_tf['cluster'] == pred[0]].drop(
+        'cluster', axis=1)
+
+    user_log_my = user_log.iloc[user_cate_tf_cluster.index, :]
+    my_book = pd.merge(user_log_my[["book_id", "user_id"]], review, on=[
+                       "book_id", "user_id"])
+    my_book_rank = my_book.groupby(['user_id', 'book_id'])[
+        "rank"].mean().unstack().fillna(0)
     return ''
