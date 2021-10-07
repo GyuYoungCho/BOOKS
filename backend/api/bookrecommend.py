@@ -91,9 +91,10 @@ def fit(user_id):
     params = {'epoch': 50, 'task': 'reg',
               'metric': 'rmse', 'k': 10, 'stop_window': 3}
 
-    # ffm = xl.create_ffm()
+    ffm = xl.create_ffm()
 
     ffm.setTrain(train_path)
+    ffm.setQuiet()
     ffm.fit(params, model_path)
 
     return "success"
@@ -109,7 +110,7 @@ def recommend(user_id):
     item_path = os.path.join(
         get_project_root_path(), "backend", "static", "item", f'book{user_id}.pkl')
 
-    # ffm = xl.create_ffm()
+    ffm = xl.create_ffm()
     ffm.setTest(test_path)
     ffm.predict(model_path, output_path)
 
@@ -120,8 +121,15 @@ def recommend(user_id):
     df_ranked = pd.Series(preds, index=book_list)
 
     df_ranked.sort_values(ascending=False, inplace=True)
-    k = len(df_ranked.index) if len(df_ranked.index) < 10 else 10
+    k = len(df_ranked.index) if len(df_ranked.index) < 12 else 12
     recomendations_list = df_ranked.index.values[:k].tolist()
+
+    if k < 12:
+        while k < 12:
+            ran = np.random.choice(14999, 1)
+            if ran[0] not in recomendations_list:
+                recomendations_list.append(ran[0])
+                k += 1
 
     cursor.execute(
         'SELECT * FROM book where book_id in {}'.format(tuple(recomendations_list)))
