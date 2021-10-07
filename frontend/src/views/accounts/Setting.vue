@@ -33,7 +33,7 @@
           </v-chip>
         </v-chip-group>
       </v-card-text>
-      {{ selected }}
+      
     </v-card>
 
     <v-btn color="success" class="mr-4" @click="add">
