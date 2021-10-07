@@ -109,7 +109,7 @@ public class BookController {
                 Integer.parseInt(subinfodata.get("itemPage").toString())
         );
 		
-		Book book = bookDao.getByIsbn(isbn);
+		Book book = bookDao.findByIsbn(isbn);
 		
 		if(userId!=0 && book!=null) {
 			User user = userDao.getByUserId(userId);

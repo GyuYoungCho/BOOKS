@@ -10,7 +10,7 @@ import com.project.book.dto.Book;
 
 public interface BookDao extends JpaRepository<Book, Integer>{
 	Book getByBookId(int book_id);
-	Book getByIsbn(String isbn);
+	Book findByIsbn(String isbn);
 	
 	@Query(value="select * from book b " + 
 			"where lower(title) like :keyword  "

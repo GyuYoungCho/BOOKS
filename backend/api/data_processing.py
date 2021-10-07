@@ -72,6 +72,7 @@ def processing(user_id):
     user_category = user_category_data()
     book = book_data()
     review = review_data()
+    que = f'user_id=={user_id}'
 
     # user의 관심 카테고리 user_id별 리스트화
     user_category['user_category_id'] = user_category['user_category_id'].astype(
@@ -80,6 +81,9 @@ def processing(user_id):
         'user_id').agg(lambda x: ' '.join(set(x)))
     user_cate['user_category_id'] = user_cate['user_category_id'].str.split(
         ' ')
+
+    user_idx = user_cate.reset_index().query(que).index.values
+    idx = user_idx[0] if len(user_idx) != 0 else 0
 
     cate_list = book['category_id'].unique()
     for cate in cate_list:
@@ -90,8 +94,6 @@ def processing(user_id):
     user_cate[user_cate.columns[1:]] = mlb.fit_transform(
         user_cate['user_category_id'])
     user_cate.drop('user_category_id', axis=1, inplace=True)
-
-    que = f'user_id=={user_id}'
 
     if(len(user_log.query(que)) != 0 and len(review.query(que)) != 0):
         data1 = pd.merge(user_log[["book_id", "user_id"]],
@@ -123,7 +125,7 @@ def processing(user_id):
     kmeans = KMeans(n_clusters=26, random_state=0)
     kmeans.fit(ps)
 
-    pred = kmeans.predict(ps.loc[int(user_id), :].to_frame().T)
+    pred = kmeans.predict(ps.loc[idx, :].to_frame().T)
     user_cate['cluster'] = kmeans.labels_
     user_cate_cluster = user_cate[user_cate['cluster'] == pred[0]].drop(
         'cluster', axis=1)
