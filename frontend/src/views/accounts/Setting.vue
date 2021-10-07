@@ -52,7 +52,7 @@ export default {
     chips: [
       
     ],
-    selected: [],
+    selected: [1, 3],
     hashtags: [
       "가정/요리/뷰티",
       "건강/취미/레저",
@@ -125,8 +125,9 @@ export default {
       this.chips = [...this.chips];
     },
     async add() {
-      await axios.delete(`http://localhost:8500/api/category/delete/${localStorage.getItem('primarykey')}`,{user_id: localStorage.getItem('primarykey')})
+      await axios.get(`http://localhost:8500/api/category/delete/${localStorage.getItem('primarykey')}`,{user_id: localStorage.getItem('primarykey')})
       for (var i=0; i < this.selected.length; i++) {
+        // const res = await axios.post(`http://localhost:8500/api/category/add`, {tag: this.selected[i], user_id: localStorage.getItem('primarykey')})
         const res = await axios.post(`http://localhost:8500/api/category/add`, {tag: this.selected[i], user_id: localStorage.getItem('primarykey')})
         res
         this.$router.push('/')

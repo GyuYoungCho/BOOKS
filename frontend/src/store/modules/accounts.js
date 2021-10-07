@@ -37,8 +37,8 @@ const actions = {
     localStorage.setItem("primarykey", res.data.user_id);
 
     // 추천 알고리즘
-    axios.get(`http://localhost:8000/main/fit/${res.data.user_id}`, loginData, { login: loginData });
-
+    const test = await axios.get(`http://localhost:8000/main/fit/${res.data.user_id}`, loginData, { login: loginData });
+    console.log(test)
     // 로그인 아이디 보내서 저장하기
     router.go();
   },

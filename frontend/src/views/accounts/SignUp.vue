@@ -81,7 +81,7 @@ export default {
       (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
     ],
 
-    selected: [],
+    selected: [1, 3],
     hashtags: [
       "가정/요리/뷰티",
       "건강/취미/레저",
@@ -161,6 +161,7 @@ export default {
     },
     signUp(signUpData) {
       
+
       // console.log(this.signUpData.hashtag)
       for (var i = 0; i<this.signUpData.hashtag.length; i++) {
         //this.signUpData.hashtag[i]=this.hashtag[i];
@@ -169,6 +170,8 @@ export default {
 
       this.$store.dispatch('signUp',[signUpData,this.selected])  
       this.$router.push('/')
+
+      
     }
   },
 };

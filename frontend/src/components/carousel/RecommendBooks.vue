@@ -1,6 +1,6 @@
 <template>
   <div class="recommendBooksDiv">
-    <h1>this is RecommendBooks Page</h1>
+    <h1>this is Recommend Books Page</h1>
     <div class="container">
       <div class="carousel">
         <!-- rotateY x(컴포 개수) x = 360/deg -->
