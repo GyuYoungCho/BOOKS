@@ -42,13 +42,14 @@ const actions = {
 
     localStorage.setItem("primarykey", res.data.user_id)
     // 로그인 아이디 보내서 저장하기
-   //  router.go()
+    router.go()
   },
   // 로그아웃
   logout(context) {
     localStorage.removeItem("key")
     context.commit('RESET_AUTHTOKEN')
     console.log(context, this.$router)
+    localStorage.clear()
     router.go()
   },
   // 관심분야 설정

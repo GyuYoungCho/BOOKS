@@ -2,15 +2,8 @@
   <div>
     <v-app>
       <v-container fluid>
-        <v-row align="center" justify="end">
-          <v-col class="d-flex" cols="2" sm="2">
-            <v-select
-              :items="items"
-              placeholder="통합검색"
-              v-model="selectedItem"
-            ></v-select>
-          </v-col>
-          <p>{{ selectedItem }}</p>
+        <v-row align="center" justify="center">
+          
           <v-col class="d-flex" cols="8" sm="8" autocomplete>
             <v-text-field v-model="inputText" placeholder="검색어를 입력하세요." @keyup.enter="search()"></v-text-field>
           </v-col>
@@ -68,7 +61,6 @@ export default {
   unmounted() {},
   methods: {
     search() {
-      console.log("dkdk")
       this.$store.dispatch('searchBook', this.inputText)
       this.$router.push(`/search/${this.inputText}`)
       // this.$router.go()

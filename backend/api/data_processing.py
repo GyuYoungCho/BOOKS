@@ -3,8 +3,10 @@ import pandas as pd
 from sklearn.preprocessing import MultiLabelBinarizer
 from sklearn.decomposition import PCA
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.datasets import dump_svmlight_file
 from sklearn.cluster import KMeans
 
+from .util import *
 
 cursor = connection.cursor()
 
@@ -90,7 +92,7 @@ def processing(user_id):
 
     que = f'user_id=={user_id}'
 
-    if(len(user_log.query(que)) != 0):
+    if(len(user_log.query(que)) != 0 and len(review.query(que)) != 0):
         data1 = pd.merge(user_log[["book_id", "user_id"]],
                          review, how="left", on=["book_id", "user_id"])
         data1['content'].fillna('', inplace=True)
@@ -114,11 +116,11 @@ def processing(user_id):
 
     # 차원 축소 및 클러스터링
 
-    pca = PCA(n_components=3)
+    pca = PCA(n_components=15)
     pca.fit(user_cate)
     pca_samples = pca.transform(user_cate)
     ps = pd.DataFrame(pca_samples)
-    kmeans = KMeans(n_clusters=4)
+    kmeans = KMeans(n_clusters=26)
     kmeans.fit(ps)
 
     pred = kmeans.predict(ps.loc[int(user_id), :].to_frame().T)
@@ -126,10 +128,34 @@ def processing(user_id):
     user_cate_cluster = user_cate[user_cate['cluster'] == pred[0]].drop(
         'cluster', axis=1)
 
-    user_log_my = user_log.iloc[user_cate_cluster.index, :]
-    my_book = pd.merge(user_log_my[["book_id", "user_id"]], review, on=[
-                       "book_id", "user_id"])
-    my_book_rank = my_book.groupby(['user_id', 'book_id'])[
-        "rank"].mean().unstack().fillna(0)
+    user_log_my = user_log[user_log['user_id'].isin(user_cate_cluster.index)]
+    user_my_re = pd.merge(user_log_my[["book_id", "user_id"]],
+                          review, how="left", on=["book_id", "user_id"])
+    user_my_re_g = user_my_re.groupby(["book_id", "user_id"])[
+        "rank"].mean().reset_index()
+    user_my_re_g = pd.merge(user_my_re_g, user_cate, on="user_id")
 
-    return my_book_rank
+    user_dump = pd.get_dummies(user_my_re_g['user_id'], prefix='u')
+    book_dump = pd.get_dummies(user_my_re_g['book_id'], prefix='b')
+    all_data = pd.concat([user_dump, book_dump,
+                          user_my_re_g.drop(['book_id', 'user_id'], axis=1)], axis=1)
+
+    y = all_data['rank']
+    X = all_data.drop("rank", axis=1)
+
+    train_path = os.path.join(
+        get_project_root_path(), "backend", "static", f'trainfm{user_id}.txt')
+    test_path = os.path.join(
+        get_project_root_path(), "backend", "static", f'testfm{user_id}.txt')
+
+    dump_svmlight_file(X.values, y.values, train_path)
+
+    my_test = pd.concat([user_dump, book_dump,
+                         user_my_re_g.drop(['book_id', 'user_id', 'rank'], axis=1)], axis=1)
+    my_test = my_test[my_test["u_"+user_id] != 1].reset_index(drop=True)
+    my_test[my_test.columns[my_test.columns.to_series(
+    ).str.contains("u_").fillna(False)]] = 0
+    my_test["u_"+user_id] = 1
+    my_test["rank"] = 0
+    dump_svmlight_file(my_test.drop("rank", axis=1).values,
+                       my_test["rank"].values, test_path)

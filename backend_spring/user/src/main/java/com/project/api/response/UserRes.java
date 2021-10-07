@@ -17,12 +17,7 @@ public class UserRes{
 	/*
 	 * 추가
 	 */
-	@ApiModelProperty(name="phoneNum")
-	String phoneNum;
-	@ApiModelProperty(name="aboutMe")
-	String aboutMe;
-	@ApiModelProperty(name="totalpoint")
-	int totalPoint;
+
 	
 //	public static UserRes of(Profile profile) {
 //		UserRes res = new UserRes();

@@ -5,10 +5,10 @@
 
     <carousel-3d ref="bestseller" :width="300" :height="400" :display="9" :autoplay="true" :inverseScaling="100" :onMainSlideClick="bookDetail">
       <slide v-for="(slide, i) in slides" :index="i" :key="i" :id="`slide${i}`" style="border-radius: 7px;" >
-        <img src="../../assets/BOOKS-logo.png" alt="" @mouseover="hoverCheck()" @mouseout="mouseOutCheck()">
-        <span v-show="isHover" class="title">You know what?</span>
+        <img :src="`${bestsellers[i].cover}`" alt="" @mouseover="hoverCheck()" @mouseout="mouseOutCheck()">
+        <!-- <span v-show="isHover" class="title">You know what?</span> -->
         <p>
-          {{ i }}, 도서명
+          {{bestsellers[i].title}}
         </p>
       </slide>
     </carousel-3d>
@@ -36,8 +36,11 @@ export default {
   beforeCreate() {},
   async created() {
     await this.$store.dispatch('bestseller')
-    this.bestsellers = await this.$store.getters('getBestseller')
+    this.bestsellers = await this.$store.getters['getBestseller']
     console.log(this.bestsellers)
+    for (var i=0; i < this.bestsellers.length; i++) {
+      this.bestsellers[i].cover = this.bestsellers[i].cover.replace("sum", "500")
+    }
     // await axios.get('/main/best')
       // .then()
   },
@@ -50,8 +53,9 @@ export default {
   methods: {
     bookDetail() {
       console.log(this.$refs.bestseller.currentIndex)
-      this.$store.dispatch('bookDetail', 'isbn')
-      this.$router.push('/book/bookname')
+      this.$store.dispatch('bookDetail', this.bestsellers[this.$refs.bestseller.currentIndex].isbn)
+      // this.$router.push('/book/bookname')
+      
     },
     // clicked(idx) {
     //   console.log(idx)

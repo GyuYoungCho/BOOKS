@@ -16,4 +16,7 @@ public class UserLoginPostReq {
 	String id;
 	@ApiModelProperty(name="유저 Password", example="your_password")
 	String password;
+	@ApiModelProperty(name="유저 primary id", example="your_userId")
+	int user_id;
+	
 }

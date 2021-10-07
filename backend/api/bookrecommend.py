@@ -14,8 +14,6 @@ from .util import *
 import pandas as pd
 import xlearn as xl
 
-from .FieldAwareFMRecommender import *
-
 
 headers = {
     'user-agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36"}
@@ -53,31 +51,29 @@ def download(url, params={}, headers={}, method='GET', limit=3):
 def best():
     url = "https://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey={api}&QueryType=Bestseller&MaxResults=100&start=1&SearchTarget=Book&output=js&Version=20131101".format(
         api=bookapikey())
-    get_project_root_path()
+    print(get_project_root_path())
+
     resp = download(url, method='GET')
     result = resp.json()
     return result['item']
 
 
 def fit(user_id):
-    data = processing(user_id)
+    processing(user_id)
+
     ffm_data_path = os.path.join(
-        get_project_root_path(), "resources", "ffm_data")
-    model = FieldAwareFMRecommender(data, model_type="fm",
-                                    train_svm_file_path=os.path.join(
-                                        ffm_data_path, "train.txt"),
-                                    valid_svm_file_path=os.path.join(
-                                        ffm_data_path, "test.txt"),
-                                    approximate_recommender=best_model, ICM_train=ICM_all, UCM_train=UCM_all,
-                                    item_feature_fields=item_feature_fields, user_feature_fields=user_feature_fields,
-                                    max_items_to_predict=20)
+        get_project_root_path(), "backend", "static")
+    # params = {'epoch': 20, 'task': 'reg', 'metric': 'rmse'}
 
-    model.fit(latent_factors=100, learning_rate=0.01,
-              epochs=1000, regularization=1e-6, stop_window=5)
+    # ffm = xl.create_ffm()
+    # ffm.setTrain(ffm_data_path)
 
-    return "success"
+    # ffm.setTest(valid_data_file)
+    # ffm.fit(params, xlmodel_fname)
+    # return "success"
 
 
 def recommend(user_id):
-
+    ffm = xl.create_ffm()
+    ffm.predict()
     return ''

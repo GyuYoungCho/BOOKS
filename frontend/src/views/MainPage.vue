@@ -2,8 +2,8 @@
   <div class="mainPage">
     <h1>this is main page!</h1>
     <search-bar />
-    <best-seller />
-    <recommend-books v-if="isLoggedIn()"></recommend-books>
+    <best-seller v-show="this.$router.history.current.name !== 'SearchResult'"/>
+    <recommend-books v-if="(isLoggedIn() && this.$router.history.current.name !== 'SearchResult')"></recommend-books>
     <search-result v-show="this.$router.history.current.name === 'SearchResult'"/>
   </div>
 </template>
@@ -51,7 +51,7 @@ export default {
       if (localStorage.getItem("key")) {
         return true
       }
-      return true
+      return false
     }
   },
 };
