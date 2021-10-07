@@ -7,6 +7,7 @@ from sklearn.datasets import dump_svmlight_file
 from sklearn.cluster import KMeans
 
 from .util import *
+import pickle
 
 cursor = connection.cursor()
 
@@ -113,14 +114,13 @@ def processing(user_id):
                                   index=data1['user_id']).reset_index()
         tfidf_g_data = tfidf_data.groupby('user_id').mean()
         user_cate = pd.concat([user_cate, tfidf_g_data], axis=1).fillna(0)
-
     # 차원 축소 및 클러스터링
 
     pca = PCA(n_components=15)
     pca.fit(user_cate)
     pca_samples = pca.transform(user_cate)
     ps = pd.DataFrame(pca_samples)
-    kmeans = KMeans(n_clusters=26)
+    kmeans = KMeans(n_clusters=26, random_state=0)
     kmeans.fit(ps)
 
     pred = kmeans.predict(ps.loc[int(user_id), :].to_frame().T)
@@ -129,6 +129,8 @@ def processing(user_id):
         'cluster', axis=1)
 
     user_log_my = user_log[user_log['user_id'].isin(user_cate_cluster.index)]
+    user_list = user_log_my['user_id'].unique()
+
     user_my_re = pd.merge(user_log_my[["book_id", "user_id"]],
                           review, how="left", on=["book_id", "user_id"])
     user_my_re_g = user_my_re.groupby(["book_id", "user_id"])[
@@ -144,18 +146,37 @@ def processing(user_id):
     X = all_data.drop("rank", axis=1)
 
     train_path = os.path.join(
-        get_project_root_path(), "backend", "static", f'trainfm{user_id}.txt')
+        get_project_root_path(), "backend", "static", "data", f'trainfm{user_id}.txt')
     test_path = os.path.join(
-        get_project_root_path(), "backend", "static", f'testfm{user_id}.txt')
+        get_project_root_path(), "backend", "static", "data", f'testfm{user_id}.txt')
+    item_path = os.path.join(
+        get_project_root_path(), "backend", "static", "item", f'book{user_id}.pkl')
 
     dump_svmlight_file(X.values, y.values, train_path)
 
     my_test = pd.concat([user_dump, book_dump,
-                         user_my_re_g.drop(['book_id', 'user_id', 'rank'], axis=1)], axis=1)
-    my_test = my_test[my_test["u_"+user_id] != 1].reset_index(drop=True)
+                         user_my_re_g.drop(['user_id', 'rank'], axis=1)], axis=1)
+
+    if int(user_id) in user_list:
+        my_test = my_test[my_test["u_"+user_id] != 1].reset_index(drop=True)
+
+    my_test.drop_duplicates("book_id", inplace=True)
+
+    book_list = my_test['book_id'].values.tolist()
+    pickle.dump(book_list, open(item_path, 'wb'))
+
+    my_test.drop("book_id", axis=1, inplace=True)
+
+    u_col = my_test.columns[my_test.columns.to_series(
+    ).str.contains("u_").fillna(False)].values
+
+    repl = np.full(u_col.shape, 0)
+
     my_test[my_test.columns[my_test.columns.to_series(
-    ).str.contains("u_").fillna(False)]] = 0
-    my_test["u_"+user_id] = 1
+    ).str.contains("u_").fillna(False)]] = repl
+    if int(user_id) in user_list:
+        my_test["u_"+user_id] = 1
+
     my_test["rank"] = 0
     dump_svmlight_file(my_test.drop("rank", axis=1).values,
                        my_test["rank"].values, test_path)
