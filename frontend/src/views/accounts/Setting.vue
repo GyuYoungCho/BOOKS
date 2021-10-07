@@ -1,6 +1,6 @@
 <template>
   <div class="settingPage">
-    <div>검색 키워드 관리</div>
+    <div>관심 도서 관리</div>
     <v-combobox
       v-model="chips"
       chips
@@ -36,12 +36,13 @@
       {{ selected }}
     </v-card>
 
-    <v-btn color="success" class="mr-4" @click="validate">
+    <v-btn color="success" class="mr-4" @click="add">
       설정 완료
     </v-btn>
   </div>
 </template>
 <script>
+import axios from 'axios';
 export default {
   components: {},
   data: () => ({
@@ -51,7 +52,7 @@ export default {
     chips: [
       
     ],
-    selected: [1, 3],
+    selected: [],
     hashtags: [
       "가정/요리/뷰티",
       "건강/취미/레저",
@@ -86,12 +87,18 @@ export default {
     ],
   }),
   beforeCreate() {},
-  created() {
-    console.log(localStorage.getItem('primarykey'))
+  async created() {
     if ( !localStorage.getItem('primarykey') ) {
       this.$router.push('/')
     }
     this.$store.dispatch('userBookList')
+
+    const res = await axios.get(`http://localhost:8500/api/category/${localStorage.getItem('primarykey')}`, {params: {user_id: localStorage.getItem('primarykey')}})
+    this.selected = []
+    for (var j=0; j<res.data.userCategory.length;j++) {
+      this.selected.push(res.data.userCategory[j].categoryId)
+    }
+    
     this.rawChips = this.$store.getters['getUserBookList']
     for ( var i = 0; i < this.rawChips.length; i++) {
       if ( this.chips.indexOf(this.rawChips[i].title) !== -1 ) {
@@ -101,7 +108,6 @@ export default {
         this.chips.push(this.rawChips[i].title)
       }
     }
-    console.log(this.chips)
   },
   beforeMount() {},
   mounted() {},
@@ -118,6 +124,14 @@ export default {
       console.log(this.chips)
       this.chips = [...this.chips];
     },
+    async add() {
+      await axios.delete(`http://localhost:8500/api/category/delete/${localStorage.getItem('primarykey')}`,{user_id: localStorage.getItem('primarykey')})
+      for (var i=0; i < this.selected.length; i++) {
+        const res = await axios.post(`http://localhost:8500/api/category/add`, {tag: this.selected[i], user_id: localStorage.getItem('primarykey')})
+        res
+        this.$router.push('/')
+      }
+    }
   },
 };
 </script>

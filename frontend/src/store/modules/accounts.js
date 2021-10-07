@@ -25,16 +25,14 @@ const mutations = {
 const actions = {
   // 가입
   async signUp(context, userInfo) {
-    console.log(userInfo)
-    // const res = await axios.post('http://localhost:8500/api/user/signup', {params: {id: userInfo[0], password: userInfo[1], nickname: userInfo[2]}} )
-    const res = await axios.post('http://localhost:8500/api/user/signup', userInfo, {register: userInfo})
-    console.log(res)
+    //userInfo[0] = user 정보값
+    //userInfo[1] = category index값
+    const res = await axios.post('http://localhost:8500/api/user/signup', userInfo[0], {register: userInfo[0]})
+    context, res
   },
   // 로그인
   async signIn(context, loginData) {
-    console.log(loginData)
     const res = await axios.post('http://localhost:8500/api/user/login', loginData, {login: loginData})
-    console.log(res)
     localStorage.setItem("key", res.data.accessToken)
     context.commit('SET_AUTHTOKEN', localStorage.getItem("key"))
     

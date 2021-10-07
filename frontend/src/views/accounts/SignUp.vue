@@ -12,7 +12,6 @@
 
       <v-text-field
         v-model="signUpData.password"
-        :rules="passwordRules"
         :type="'password'"
         label="비밀번호"
         required
@@ -20,7 +19,6 @@
 
       <v-text-field
         v-model="passwordChk"
-        :rules="passwordRules"
         :type="'password'"
         label="비밀번호 확인"
         required
@@ -28,7 +26,6 @@
 
       <v-text-field
         v-model="signUpData.nickname"
-        :rules="nameRules"
         label="별명"
         required
       ></v-text-field>
@@ -170,8 +167,8 @@ export default {
         console.log(this.signUpData.hashtag)
       }
 
-      this.$store.dispatch('signUp', signUpData)  
-      
+      this.$store.dispatch('signUp',[signUpData,this.selected])  
+      this.$router.push('/')
     }
   },
 };
