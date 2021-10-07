@@ -42,7 +42,7 @@
           </v-chip>
         </v-chip-group>
       </v-card-text>
-      {{ signUpData.hashtag }}
+
     </v-card>
 
     <v-btn :disabled="!valid" color="success" class="mr-4" @click="signUp(signUpData)">
