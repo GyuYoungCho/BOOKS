@@ -91,7 +91,7 @@ def fit(user_id):
     params = {'epoch': 50, 'task': 'reg',
               'metric': 'rmse', 'k': 10, 'stop_window': 3}
 
-    ffm = xl.create_ffm()
+    # ffm = xl.create_ffm()
 
     ffm.setTrain(train_path)
     ffm.fit(params, model_path)
@@ -109,7 +109,7 @@ def recommend(user_id):
     item_path = os.path.join(
         get_project_root_path(), "backend", "static", "item", f'book{user_id}.pkl')
 
-    ffm = xl.create_ffm()
+    # ffm = xl.create_ffm()
     ffm.setTest(test_path)
     ffm.predict(model_path, output_path)
 

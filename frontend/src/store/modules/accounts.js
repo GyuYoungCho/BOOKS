@@ -37,10 +37,15 @@ const actions = {
     context.commit('SET_AUTHTOKEN', localStorage.getItem("key"))
     
     context.commit('SET_ID', res.data.user_id)
-
     localStorage.setItem("primarykey", res.data.user_id)
+
+    // 추천 알고리즘
+    const test = axios.get(`http://localhost:8000/main/fit/${res.data.user_id}`, loginData, {login: loginData})
+    console.log("djdjdj")
+    console.log(test)
+    console.log("djdjdj")
     // 로그인 아이디 보내서 저장하기
-    router.go()
+    //router.go()
   },
   // 로그아웃
   logout(context) {
